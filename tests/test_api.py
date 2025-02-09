@@ -8,11 +8,11 @@ def test_deploy_request_print():
     payload = {
         "model_id": "apple/OpenELM-270M",
         "user_id": "test-user",
-        "api_name": "pola-open-elm",
+        "api_name": "polaris-openelm-test-123",
         "ssh_config": {
             "host": "24.83.13.62",
             "username": "tang",
-            "port": "11000",
+            "port": "14000",
             "password": "Yogptcommune1"
         }
     }
