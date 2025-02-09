@@ -1,0 +1,12 @@
+from fastapi import APIRouter, Depends, HTTPException
+from ..auth.middleware import verify_token
+
+router = APIRouter()
+
+@router.post("/inference")
+async def inference(data: dict, token: dict = Depends(verify_token)):
+    try:
+        result = await model.generate(**data)
+        return {"result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

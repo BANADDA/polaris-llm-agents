@@ -1,0 +1,160 @@
+2025-02-09 09:10:26,538 - INFO - Initializing SSH client.
+2025-02-09 09:10:26,538 - INFO - Attempting SSH connection to 24.83.13.62:11000
+2025-02-09 09:10:29,717 - INFO - SSH connection established successfully.
+2025-02-09 09:10:29,717 - INFO - Initializing SFTP connection
+2025-02-09 09:10:31,417 - INFO - SFTP connection established successfully
+2025-02-09 09:10:31,417 - INFO - Executing command: docker ps
+2025-02-09 09:10:32,319 - DEBUG - Command output: CONTAINER ID   IMAGE                     COMMAND            CREATED          STATUS          PORTS                                         NAMES
+0aa6a9430d7d   test-user-gpt2:ffedd955   "/entrypoint.sh"   14 minutes ago   Up 14 minutes   0.0.0.0:8679->8000/tcp, [::]:8679->8000/tcp   relaxed_dubinsky
+b845ba740af3   dev-container:latest      "/entrypoint.sh"   3 days ago       Up 3 days       0.0.0.0:11002->22/tcp, [::]:11002->22/tcp     suspicious_zhukovsky
+f8051b7e9595   dev-container:latest      "/entrypoint.sh"   3 days ago       Up 3 days       0.0.0.0:11000->22/tcp, [::]:11000->22/tcp     nice_carson
+2025-02-09 09:10:32,319 - INFO - Checking for npm installation
+2025-02-09 09:10:32,319 - INFO - Executing command: which npm
+2025-02-09 09:10:33,703 - DEBUG - Command output: /usr/bin/npm
+2025-02-09 09:10:33,703 - INFO - Checking for localtunnel installation
+2025-02-09 09:10:33,703 - INFO - Executing command: which lt
+2025-02-09 09:10:35,057 - DEBUG - Command output: /usr/local/bin/lt
+2025-02-09 09:10:35,057 - INFO - Selected random port: 8210
+2025-02-09 09:10:35,057 - INFO - Executing command: mkdir -p /tmp/deploy_ad651487
+2025-02-09 09:10:36,368 - INFO - Executing command: mkdir -p /tmp/deploy_ad651487/app/auth
+2025-02-09 09:10:37,682 - INFO - Executing command: mkdir -p /tmp/deploy_ad651487/app/api
+2025-02-09 09:10:39,061 - INFO - Writing content to /tmp/deploy_ad651487/app/__init__.py
+2025-02-09 09:10:40,666 - INFO - File write completed successfully
+2025-02-09 09:10:40,666 - INFO - Writing content to /tmp/deploy_ad651487/app/auth/__init__.py
+2025-02-09 09:10:41,435 - INFO - File write completed successfully
+2025-02-09 09:10:41,435 - INFO - Writing content to /tmp/deploy_ad651487/app/api/__init__.py
+2025-02-09 09:10:42,208 - INFO - File write completed successfully
+2025-02-09 09:10:42,208 - INFO - Writing content to /tmp/deploy_ad651487/Dockerfile
+2025-02-09 09:10:43,440 - INFO - File write completed successfully
+2025-02-09 09:10:43,440 - INFO - Writing content to /tmp/deploy_ad651487/requirements.txt
+2025-02-09 09:10:44,659 - INFO - File write completed successfully
+2025-02-09 09:10:44,659 - INFO - Writing content to /tmp/deploy_ad651487/app/app.py
+2025-02-09 09:10:45,843 - INFO - File write completed successfully
+2025-02-09 09:10:45,858 - INFO - Writing content to /tmp/deploy_ad651487/app/auth/middleware.py
+2025-02-09 09:10:47,114 - INFO - File write completed successfully
+2025-02-09 09:10:47,130 - INFO - Writing content to /tmp/deploy_ad651487/app/auth/token.py
+2025-02-09 09:10:48,452 - INFO - File write completed successfully
+2025-02-09 09:10:48,452 - INFO - Writing content to /tmp/deploy_ad651487/app/auth/config.json
+2025-02-09 09:10:49,674 - INFO - File write completed successfully
+2025-02-09 09:10:49,674 - INFO - Writing content to /tmp/deploy_ad651487/app/api/inference.py
+2025-02-09 09:10:50,867 - INFO - File write completed successfully
+2025-02-09 09:10:50,867 - INFO - Writing content to /tmp/deploy_ad651487/app/api/token.py
+2025-02-09 09:10:52,141 - INFO - File write completed successfully
+2025-02-09 09:10:52,141 - INFO - Executing command: cd /tmp/deploy_ad651487 && docker build -t test-user-apple-openelm-270m:fe5dd5ef .
+2025-02-09 09:14:09,714 - INFO - Executing command: docker images test-user-apple-openelm-270m:fe5dd5ef --quiet
+2025-02-09 09:14:10,998 - DEBUG - Command output: ff409fa51dff
+2025-02-09 09:14:10,998 - INFO - Executing command: docker run -d -p 8210:8000 test-user-apple-openelm-270m:fe5dd5ef
+2025-02-09 09:14:12,641 - DEBUG - Command output: 0edc33a990190492560bbdc002b1d2ff46d88b44ca18a1853b1494374ee2217b
+2025-02-09 09:14:12,641 - INFO - Executing command: docker inspect --format='{{.State.Status}}' 0edc33a990190492560bbdc002b1d2ff46d88b44ca18a1853b1494374ee2217b
+2025-02-09 09:14:14,031 - DEBUG - Command output: running
+2025-02-09 09:14:14,031 - INFO - Executing command: docker inspect --format='{{json .NetworkSettings}}' 0edc33a990190492560bbdc002b1d2ff46d88b44ca18a1853b1494374ee2217b
+2025-02-09 09:14:15,329 - DEBUG - Command output: {"Bridge":"","SandboxID":"45a79570ad1bb959ee9a31593d82ebb073adbcfc57014d9e7ca7f82f7e332699","SandboxKey":"/var/run/docker/netns/45a79570ad1b","Ports":{"8000/tcp":[{"HostIp":"0.0.0.0","HostPort":"8210"},{"HostIp":"::","HostPort":"8210"}]},"HairpinMode":false,"LinkLocalIPv6Address":"","LinkLocalIPv6PrefixLen":0,"SecondaryIPAddresses":null,"SecondaryIPv6Addresses":null,"EndpointID":"644e68f62694f000156d9c76810301d1a54bba7da033a86bf820644e2b9589bd","Gateway":"172.17.0.1","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"IPAddress":"172.17.0.5","IPPrefixLen":16,"IPv6Gateway":"","MacAddress":"02:42:ac:11:00:05","Networks":{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"MacAddress":"02:42:ac:11:00:05","DriverOpts":null,"NetworkID":"bc6fd91a339efc5da8670cf297d1691964d7bb4fad645b279a23b1303e221346","EndpointID":"644e68f62694f000156d9c76810301d1a54bba7da033a86bf820644e2b9589bd","Gateway":"172.17.0.1","IPAddress":"172.17.0.5","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":null}}}
+2025-02-09 09:14:15,329 - INFO - Creating tunnel for port 8210 with subdomain apple/OpenELM-270M
+2025-02-09 09:14:15,329 - INFO - Executing command: mkdir -p /tmp/tunnels
+2025-02-09 09:14:16,657 - INFO - Executing command: touch /tmp/tunnels/tunnel_apple-openelm-270m_8210.log
+2025-02-09 09:14:17,862 - INFO - Executing command: chmod 777 /tmp/tunnels/tunnel_apple-openelm-270m_8210.log
+2025-02-09 09:14:19,241 - INFO - Executing command: nohup lt --port 8210 --subdomain apple-openelm-270m > /tmp/tunnels/tunnel_apple-openelm-270m_8210.log 2>&1 & echo $!
+2025-02-09 09:14:20,633 - DEBUG - Command output: 1165829
+2025-02-09 09:14:20,633 - INFO - Started tunnel process with PID: 1165829
+2025-02-09 09:14:23,637 - INFO - Executing command: cat /tmp/tunnels/tunnel_apple-openelm-270m_8210.log
+2025-02-09 09:14:24,557 - DEBUG - Command output: your url is: https://sour-fox-16.loca.lt
+2025-02-09 09:14:24,557 - INFO - Tunnel created successfully: https://sour-fox-16.loca.lt
+2025-02-09 09:14:24,557 - INFO - Writing content to /tmp/tunnels/tunnel_apple-openelm-270m_8210.pid
+2025-02-09 09:14:26,157 - INFO - File write completed successfully
+2025-02-09 09:14:28,618 - INFO - Executing command: rm -rf /tmp/deploy_ad651487
+2025-02-09 09:14:29,596 - INFO - Closing SFTP connection
+2025-02-09 09:14:29,596 - INFO - Closing SSH connection
+2025-02-09 09:14:29,596 - INFO - All connections closed successfully
+2025-02-09 09:14:29,596 - INFO - Initializing SSH client.
+2025-02-09 09:14:29,596 - INFO - Attempting SSH connection to 24.83.13.62:11000
+2025-02-09 09:14:32,711 - INFO - SSH connection established successfully.
+2025-02-09 09:14:32,711 - INFO - Initializing SFTP connection
+2025-02-09 09:14:34,411 - INFO - SFTP connection established successfully
+2025-02-09 09:14:34,411 - INFO - Executing command: docker logs 0edc33a990190492560bbdc002b1d2ff46d88b44ca18a1853b1494374ee2217b 2>&1
+2025-02-09 09:14:35,331 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: apple/OpenELM-270M
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-270M:
+- configuration_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-270M:
+- modeling_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+2025-02-09 09:14:35,331 - INFO - Closing SFTP connection
+2025-02-09 09:14:35,331 - INFO - Closing SSH connection
+2025-02-09 09:14:35,331 - INFO - All connections closed successfully
+2025-02-09 10:22:51,297 - INFO - Initializing SSH client.
+2025-02-09 10:22:51,297 - INFO - Attempting SSH connection to 24.83.13.62:11000
+2025-02-09 10:22:54,142 - INFO - SSH connection established successfully.
+2025-02-09 10:22:54,142 - INFO - Initializing SFTP connection
+2025-02-09 10:22:55,676 - INFO - SFTP connection established successfully
+2025-02-09 10:22:55,676 - INFO - Executing command: docker ps
+2025-02-09 10:22:56,505 - DEBUG - Command output: CONTAINER ID   IMAGE                     COMMAND            CREATED             STATUS             PORTS                                         NAMES
+0aa6a9430d7d   test-user-gpt2:ffedd955   "/entrypoint.sh"   About an hour ago   Up About an hour   0.0.0.0:8679->8000/tcp, [::]:8679->8000/tcp   relaxed_dubinsky
+b845ba740af3   dev-container:latest      "/entrypoint.sh"   3 days ago          Up 3 days          0.0.0.0:11002->22/tcp, [::]:11002->22/tcp     suspicious_zhukovsky
+f8051b7e9595   dev-container:latest      "/entrypoint.sh"   3 days ago          Up 3 days          0.0.0.0:11000->22/tcp, [::]:11000->22/tcp     nice_carson
+2025-02-09 10:22:56,505 - INFO - Checking for npm installation
+2025-02-09 10:22:56,505 - INFO - Executing command: which npm
+2025-02-09 10:22:57,695 - DEBUG - Command output: /usr/bin/npm
+2025-02-09 10:22:57,695 - INFO - Checking for localtunnel installation
+2025-02-09 10:22:57,695 - INFO - Executing command: which lt
+2025-02-09 10:22:58,902 - DEBUG - Command output: /usr/local/bin/lt
+2025-02-09 10:22:58,902 - INFO - Selected random port: 8408
+2025-02-09 10:22:58,902 - INFO - Executing command: mkdir -p /tmp/deploy_64f09935
+2025-02-09 10:23:00,078 - INFO - Executing command: mkdir -p /tmp/deploy_64f09935/app/auth
+2025-02-09 10:23:01,267 - INFO - Executing command: mkdir -p /tmp/deploy_64f09935/app/api
+2025-02-09 10:23:02,458 - INFO - Writing content to /tmp/deploy_64f09935/app/__init__.py
+2025-02-09 10:23:03,951 - INFO - File write completed successfully
+2025-02-09 10:23:03,966 - INFO - Writing content to /tmp/deploy_64f09935/app/auth/__init__.py
+2025-02-09 10:23:04,684 - INFO - File write completed successfully
+2025-02-09 10:23:04,684 - INFO - Writing content to /tmp/deploy_64f09935/app/api/__init__.py
+2025-02-09 10:23:05,402 - INFO - File write completed successfully
+2025-02-09 10:23:05,402 - INFO - Writing content to /tmp/deploy_64f09935/Dockerfile
+2025-02-09 10:23:10,095 - INFO - File write completed successfully
+2025-02-09 10:23:10,095 - INFO - Writing content to /tmp/deploy_64f09935/requirements.txt
+2025-02-09 10:23:11,360 - INFO - File write completed successfully
+2025-02-09 10:23:11,360 - INFO - Writing content to /tmp/deploy_64f09935/app/app.py
+2025-02-09 10:23:12,623 - INFO - File write completed successfully
+2025-02-09 10:23:12,623 - INFO - Writing content to /tmp/deploy_64f09935/app/auth/middleware.py
+2025-02-09 10:23:13,724 - INFO - File write completed successfully
+2025-02-09 10:23:13,724 - INFO - Writing content to /tmp/deploy_64f09935/app/auth/token.py
+2025-02-09 10:23:14,790 - INFO - File write completed successfully
+2025-02-09 10:23:14,806 - INFO - Writing content to /tmp/deploy_64f09935/app/auth/config.json
+2025-02-09 10:23:15,906 - INFO - File write completed successfully
+2025-02-09 10:23:15,906 - INFO - Writing content to /tmp/deploy_64f09935/app/api/inference.py
+2025-02-09 10:23:17,005 - INFO - File write completed successfully
+2025-02-09 10:23:17,005 - INFO - Writing content to /tmp/deploy_64f09935/app/api/token.py
+2025-02-09 10:23:18,086 - INFO - File write completed successfully
+2025-02-09 10:23:18,086 - INFO - Executing command: cd /tmp/deploy_64f09935 && docker build -t test-user-gpt2-large:b3b46776 .
+2025-02-09 10:26:26,600 - INFO - Executing command: docker images test-user-gpt2-large:b3b46776 --quiet
+2025-02-09 10:26:27,693 - DEBUG - Command output: 0e622b706e70
+2025-02-09 10:26:27,693 - INFO - Executing command: docker run -d -p 8408:8000 test-user-gpt2-large:b3b46776
+2025-02-09 10:26:29,182 - DEBUG - Command output: 66e703c7022cd9a5db1bfd599a0348831c7ecf8b5cdbb5f3df1f2f5b9f972189
+2025-02-09 10:26:29,182 - INFO - Executing command: docker inspect --format='{{.State.Status}}' 66e703c7022cd9a5db1bfd599a0348831c7ecf8b5cdbb5f3df1f2f5b9f972189
+2025-02-09 10:26:30,387 - DEBUG - Command output: running
+2025-02-09 10:26:30,387 - INFO - Executing command: docker inspect --format='{{json .NetworkSettings}}' 66e703c7022cd9a5db1bfd599a0348831c7ecf8b5cdbb5f3df1f2f5b9f972189
+2025-02-09 10:26:31,580 - DEBUG - Command output: {"Bridge":"","SandboxID":"9eff23667b22a664652bd5ff372ab8401215234e3e3ad2cb349c3cced8d53b01","SandboxKey":"/var/run/docker/netns/9eff23667b22","Ports":{"8000/tcp":[{"HostIp":"0.0.0.0","HostPort":"8408"},{"HostIp":"::","HostPort":"8408"}]},"HairpinMode":false,"LinkLocalIPv6Address":"","LinkLocalIPv6PrefixLen":0,"SecondaryIPAddresses":null,"SecondaryIPv6Addresses":null,"EndpointID":"f34a049b8a6420c26bd1c853f85205d8b80b70206001fc1362a8a624cbf8e072","Gateway":"172.17.0.1","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"IPAddress":"172.17.0.5","IPPrefixLen":16,"IPv6Gateway":"","MacAddress":"02:42:ac:11:00:05","Networks":{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"MacAddress":"02:42:ac:11:00:05","DriverOpts":null,"NetworkID":"bc6fd91a339efc5da8670cf297d1691964d7bb4fad645b279a23b1303e221346","EndpointID":"f34a049b8a6420c26bd1c853f85205d8b80b70206001fc1362a8a624cbf8e072","Gateway":"172.17.0.1","IPAddress":"172.17.0.5","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":null}}}
+2025-02-09 10:26:31,581 - INFO - Creating tunnel for port 8408 with subdomain gpt2-large
+2025-02-09 10:26:31,581 - INFO - Executing command: mkdir -p /tmp/tunnels
+2025-02-09 10:26:32,755 - INFO - Executing command: touch /tmp/tunnels/tunnel_gpt2-large_8408.log
+2025-02-09 10:26:33,958 - INFO - Executing command: chmod 777 /tmp/tunnels/tunnel_gpt2-large_8408.log
+2025-02-09 10:26:35,149 - INFO - Executing command: nohup lt --port 8408 --subdomain gpt2-large > /tmp/tunnels/tunnel_gpt2-large_8408.log 2>&1 & echo $!
+2025-02-09 10:26:36,406 - DEBUG - Command output: 1178251
+2025-02-09 10:26:36,406 - INFO - Started tunnel process with PID: 1178251
+2025-02-09 10:26:39,410 - INFO - Executing command: cat /tmp/tunnels/tunnel_gpt2-large_8408.log
+2025-02-09 10:26:40,240 - DEBUG - Command output: your url is: https://gpt2-large.loca.lt
+2025-02-09 10:26:40,240 - INFO - Tunnel created successfully: https://gpt2-large.loca.lt
+2025-02-09 10:26:40,240 - INFO - Writing content to /tmp/tunnels/tunnel_gpt2-large_8408.pid
+2025-02-09 10:26:41,778 - INFO - File write completed successfully
+2025-02-09 10:26:44,242 - INFO - Executing command: rm -rf /tmp/deploy_64f09935
+2025-02-09 10:26:48,186 - INFO - Closing SFTP connection
+2025-02-09 10:26:48,186 - INFO - Closing SSH connection
+2025-02-09 10:26:48,186 - INFO - All connections closed successfully
+2025-02-09 10:26:48,186 - INFO - Initializing SSH client.
+2025-02-09 10:26:48,186 - INFO - Attempting SSH connection to 24.83.13.62:11000
+2025-02-09 10:26:50,941 - INFO - SSH connection established successfully.
+2025-02-09 10:26:50,941 - INFO - Initializing SFTP connection
+2025-02-09 10:26:52,466 - INFO - SFTP connection established successfully
+2025-02-09 10:26:52,466 - INFO - Executing command: docker logs 66e703c7022cd9a5db1bfd599a0348831c7ecf8b5cdbb5f3df1f2f5b9f972189 2>&1
+2025-02-09 10:26:53,315 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+2025-02-09 10:26:53,315 - INFO - Closing SFTP connection
+2025-02-09 10:26:53,315 - INFO - Closing SSH connection
+2025-02-09 10:26:53,315 - INFO - All connections closed successfully

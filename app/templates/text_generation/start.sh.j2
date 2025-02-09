@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Start FastAPI app in background
+python3 -m app &
+
+# Wait for FastAPI to start
+sleep 5
+
+# Start localtunnel with custom subdomain
+lt --port 8000 --subdomain {{ api_name | replace('/', '-') | lower }} &
+
+# Keep container running
+tail -f /dev/null

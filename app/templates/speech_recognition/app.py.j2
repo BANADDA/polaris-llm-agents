@@ -1,0 +1,16 @@
+from fastapi import FastAPI, File, UploadFile, Depends
+from transformers import pipeline
+import torch
+from .auth.middleware import verify_token
+
+app = FastAPI()
+model_id = os.getenv("MODEL_ID")
+asr = pipeline("automatic-speech-recognition", model=model_id, device=0)
+
+@app.post("/inference")
+async def transcribe(audio: UploadFile = File(...), token: str = Depends(verify_token)):
+    audio_bytes = await audio.read()
+    with open("temp.wav", "wb") as f:
+        f.write(audio_bytes)
+    result = asr("temp.wav")
+    return {"transcription": result["text"]}

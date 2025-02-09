@@ -1,0 +1,8 @@
+from fastapi import Security, HTTPException
+from fastapi.security import APIKeyHeader
+from .token import TokenManager
+
+api_key_header = APIKeyHeader(name="X-API-Key")
+
+async def verify_token(api_key: str = Security(api_key_header)):
+    return TokenManager.verify_token(api_key)

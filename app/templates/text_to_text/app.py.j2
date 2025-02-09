@@ -1,0 +1,15 @@
+from fastapi import FastAPI, Depends
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+import torch
+from .auth.middleware import verify_token
+
+app = FastAPI()
+model_id = os.getenv("MODEL_ID")
+model = AutoModelForSeq2SeqLM.from_pretrained(model_id)
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+@app.post("/inference")
+async def translate(text: str, token: str = Depends(verify_token)):
+    inputs = tokenizer(text, return_tensors="pt")
+    outputs = model.generate(**inputs)
+    return {"translation": tokenizer.decode(outputs[0], skip_special_tokens=True)}

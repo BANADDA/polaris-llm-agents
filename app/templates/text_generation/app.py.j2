@@ -1,0 +1,102 @@
+from fastapi import FastAPI, Depends, HTTPException
+from typing import Dict
+import os
+import logging
+import torch
+from huggingface_hub import login
+
+{% if use_llama_cpp %}
+from llama_cpp import Llama
+{% else %}
+from transformers import AutoModelForCausalLM, AutoTokenizer
+{% endif %}
+from app.auth.middleware import verify_token
+from app.auth.token import TokenManager
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+app = FastAPI()
+model_id = os.getenv("MODEL_ID")
+
+# Initialize model with error handling
+try:
+    # Try to authenticate with HuggingFace if token is provided
+    hf_token = os.getenv("HF_TOKEN")
+    if hf_token:
+        login(token=hf_token)
+        logger.info("Authenticated with HuggingFace")
+
+    {% if use_llama_cpp %}
+    logger.info(f"Loading Llama model from: /app/{model_id}")
+    model = Llama(
+        model_path=f"/app/{model_id}",
+        n_gpu_layers=-1,  # Use all GPU layers
+        n_ctx=2048        # Context window
+    )
+    logger.info("Llama model loaded successfully")
+    {% else %}
+    logger.info(f"Loading model and tokenizer for: {model_id}")
+    # Add trust_remote_code=True and use_auth_token if needed
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        trust_remote_code=True,
+        use_auth_token=hf_token if hf_token else None,
+        device_map="auto"  # Use CUDA if available
+    )
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_id,
+        trust_remote_code=True,
+        use_auth_token=hf_token if hf_token else None
+    )
+    logger.info("Model and tokenizer loaded successfully")
+    {% endif %}
+except Exception as e:
+    logger.error(f"Error loading model: {str(e)}")
+    raise RuntimeError(f"Failed to load model: {str(e)}")
+
+@app.post("/inference")
+async def generate(prompt: str, token: str = Depends(verify_token)):
+    try:
+        {% if use_llama_cpp %}
+        logger.info("Generating response with Llama model")
+        output = model(
+            prompt,
+            max_tokens=100,
+            temperature=0.7,
+            top_p=0.95,
+            echo=False
+        )
+        return {"response": output['choices'][0]['text']}
+        {% else %}
+        logger.info("Generating response with Transformers model")
+        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        outputs = model.generate(
+            **inputs,
+            max_length=150,
+            do_sample=True,
+            temperature=0.8,
+            top_k=50,
+            top_p=0.95,
+            pad_token_id=tokenizer.eos_token_id
+        )
+        response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return {"response": response_text}
+        {% endif %}
+    except Exception as e:
+        logger.error(f"Error during inference: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/token")
+async def get_token(user_id: str, model_id: str):
+    try:
+        token = await TokenManager.generate_token(user_id, model_id)
+        return {"token": token}
+    except Exception as e:
+        logger.error(f"Error generating token: {str(e)}")
+        raise HTTPException(status_code=403, detail=str(e))
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "model_id": model_id}

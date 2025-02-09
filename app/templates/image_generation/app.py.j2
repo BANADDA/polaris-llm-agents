@@ -1,0 +1,19 @@
+from fastapi import FastAPI, Depends
+from fastapi.responses import FileResponse
+from diffusers import StableDiffusionPipeline
+import torch
+from .auth.middleware import verify_token
+import uuid
+import os
+
+app = FastAPI()
+model_id = os.getenv("MODEL_ID")
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+@app.post("/inference")
+async def generate(prompt: str, token: str = Depends(verify_token)):
+    image = pipe(prompt).images[0]
+    filename = f"{uuid.uuid4()}.png"
+    image.save(filename)
+    return FileResponse(filename)

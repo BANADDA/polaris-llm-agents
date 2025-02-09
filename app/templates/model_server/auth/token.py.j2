@@ -1,0 +1,36 @@
+from fastapi import HTTPException
+import firebase_admin
+from firebase_admin import credentials, firestore
+import jwt
+import time
+
+# Initialize Firebase Admin using the rendered JSON file
+if not firebase_admin._apps:
+    cred = credentials.Certificate("app/auth/config.json")
+    firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
+class TokenManager:
+    SECRET = "your-secret-key"
+    
+    @staticmethod
+    async def generate_token(user_id: str, model_id: str) -> str:
+        safe_model_id = model_id.replace("/", "-").lower()
+        doc_path = f"{user_id}-{safe_model_id}"
+        doc = db.collection('deployments').document(doc_path).get()
+        if not doc.exists or doc.to_dict().get('user_id') != user_id:
+            raise HTTPException(status_code=403)
+            
+        return jwt.encode({
+            'user_id': user_id,
+            'model_id': model_id,
+            'exp': time.time() + 3600
+        }, TokenManager.SECRET)
+
+    @staticmethod
+    def verify_token(token: str) -> dict:
+        try:
+            return jwt.decode(token, TokenManager.SECRET, algorithms=["HS256"])
+        except Exception as e:
+            raise HTTPException(status_code=401, detail=str(e))

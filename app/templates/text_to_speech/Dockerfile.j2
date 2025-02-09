@@ -1,0 +1,16 @@
+FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
+
+WORKDIR /app
+ENV MODEL_ID="{{ model_id }}"
+ENV USER_ID="{{ user_id }}"
+
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    libsndfile1-dev \
+    ffmpeg
+
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+COPY . .
+CMD ["python3", "app.py"]

@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+torch
+transformers
+accelerate
+{% if not use_llama_cpp %}
+# llama-cpp-python is installed via Dockerfile when needed
+{% endif %}
+pydantic
+python-jose[cryptography]
+firebase-admin

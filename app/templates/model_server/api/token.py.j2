@@ -1,0 +1,12 @@
+from fastapi import APIRouter, HTTPException
+from ..auth.token import TokenManager
+
+router = APIRouter()
+
+@router.post("/token")
+async def get_token(user_id: str, model_id: str):
+    try:
+        token = await TokenManager.generate_token(user_id, model_id)
+        return {"token": token}
+    except Exception as e:
+        raise HTTPException(status_code=403, detail=str(e))

@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+torch
+transformers
+datasets
+soundfile
+librosa
+python-multipart
+python-jose[cryptography]
+{% if model_id == 'whisper' %}
+openai-whisper
+{% endif %}

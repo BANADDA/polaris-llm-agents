@@ -1,0 +1,40 @@
+FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
+
+WORKDIR /app
+
+ENV MODEL_ID="{{ model_id }}"
+ENV USER_ID="{{ user_id }}"
+ENV PYTHONPATH=/app
+
+# Install system dependencies including build tools
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    git \
+    cmake \
+    ninja-build \
+    build-essential \
+    pkg-config \
+    gcc \
+    g++
+
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+{% if use_llama_cpp %}
+# Build and install llama-cpp-python with CUDA support
+RUN git clone --recurse-submodules -j8 https://github.com/abetlen/llama-cpp-python.git && \
+    cd llama-cpp-python && \
+    CMAKE_ARGS="-DGGML_CUDA=on" FORCE_CMAKE=1 pip install . && \
+    cd .. && \
+    rm -rf llama-cpp-python
+{% endif %}
+
+# Copy application code
+COPY . .
+
+# Create entrypoint script
+RUN echo '#!/bin/bash\ncd /app && exec uvicorn app.app:app --host 0.0.0.0 --port 8000' > /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+# Use entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
