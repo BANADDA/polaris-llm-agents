@@ -1,11 +1,14 @@
 fastapi
 uvicorn
-torch
-transformers
-accelerate
+torch>=2.0.0
+transformers>=4.37.0
+accelerate>=0.24.0
 {% if not use_llama_cpp %}
 # llama-cpp-python is installed via Dockerfile when needed
 {% endif %}
 pydantic
 python-jose[cryptography]
 firebase-admin
+huggingface_hub
+sentencepiece
+protobuf

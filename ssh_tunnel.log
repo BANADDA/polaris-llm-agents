@@ -1,0 +1,98 @@
+2025-02-09 12:52:31,937 - INFO - Initializing SSH client.
+2025-02-09 12:52:31,937 - INFO - Attempting SSH connection to 24.83.13.62:11000
+2025-02-09 12:52:34,659 - INFO - SSH connection established successfully.
+2025-02-09 12:52:34,659 - INFO - Initializing SFTP connection
+2025-02-09 12:52:36,180 - INFO - SFTP connection established successfully
+2025-02-09 12:52:36,180 - INFO - Executing command: docker ps
+2025-02-09 12:52:36,998 - DEBUG - Command output: CONTAINER ID   IMAGE                                                         COMMAND            CREATED          STATUS          PORTS                                         NAMES
+29e788e59367   test-user-deepseek-ai-deepseek-coder-6.7b-instruct:bb3796cd   "/entrypoint.sh"   16 minutes ago   Up 16 minutes   0.0.0.0:8938->8000/tcp, [::]:8938->8000/tcp   busy_stonebraker
+7775b991649c   test-user-deepseek-ai-deepseek-coder-6.7b-instruct:c950a5c7   "/entrypoint.sh"   53 minutes ago   Up 53 minutes   0.0.0.0:8282->8000/tcp, [::]:8282->8000/tcp   zen_gates
+66e703c7022c   test-user-gpt2-large:b3b46776                                 "/entrypoint.sh"   2 hours ago      Up 2 hours      0.0.0.0:8408->8000/tcp, [::]:8408->8000/tcp   romantic_morse
+0aa6a9430d7d   test-user-gpt2:ffedd955                                       "/entrypoint.sh"   4 hours ago      Up 4 hours      0.0.0.0:8679->8000/tcp, [::]:8679->8000/tcp   relaxed_dubinsky
+b845ba740af3   dev-container:latest                                          "/entrypoint.sh"   3 days ago       Up 3 days       0.0.0.0:11002->22/tcp, [::]:11002->22/tcp     suspicious_zhukovsky
+f8051b7e9595   dev-container:latest                                          "/entrypoint.sh"   4 days ago       Up 4 days       0.0.0.0:11000->22/tcp, [::]:11000->22/tcp     nice_carson
+2025-02-09 12:52:36,998 - INFO - Checking for npm installation
+2025-02-09 12:52:36,998 - INFO - Executing command: which npm
+2025-02-09 12:52:38,180 - DEBUG - Command output: /usr/bin/npm
+2025-02-09 12:52:38,180 - INFO - Checking for localtunnel installation
+2025-02-09 12:52:38,180 - INFO - Executing command: which lt
+2025-02-09 12:52:39,372 - DEBUG - Command output: /usr/local/bin/lt
+2025-02-09 12:52:39,372 - INFO - Selected random port: 8657
+2025-02-09 12:52:39,372 - INFO - Executing command: mkdir -p /tmp/deploy_407bf839
+2025-02-09 12:52:40,597 - INFO - Executing command: mkdir -p /tmp/deploy_407bf839/app/auth
+2025-02-09 12:52:41,804 - INFO - Executing command: mkdir -p /tmp/deploy_407bf839/app/api
+2025-02-09 12:52:42,986 - INFO - Writing content to /tmp/deploy_407bf839/app/__init__.py
+2025-02-09 12:52:44,477 - INFO - File write completed successfully
+2025-02-09 12:52:44,477 - INFO - Writing content to /tmp/deploy_407bf839/app/auth/__init__.py
+2025-02-09 12:52:45,200 - INFO - File write completed successfully
+2025-02-09 12:52:45,200 - INFO - Writing content to /tmp/deploy_407bf839/app/api/__init__.py
+2025-02-09 12:52:45,925 - INFO - File write completed successfully
+2025-02-09 12:52:45,941 - INFO - Writing content to /tmp/deploy_407bf839/Dockerfile
+2025-02-09 12:52:47,041 - INFO - File write completed successfully
+2025-02-09 12:52:47,041 - INFO - Writing content to /tmp/deploy_407bf839/requirements.txt
+2025-02-09 12:52:48,155 - INFO - File write completed successfully
+2025-02-09 12:52:48,155 - INFO - Writing content to /tmp/deploy_407bf839/app/app.py
+2025-02-09 12:52:49,256 - INFO - File write completed successfully
+2025-02-09 12:52:49,256 - INFO - Writing content to /tmp/deploy_407bf839/app/auth/middleware.py
+2025-02-09 12:52:50,356 - INFO - File write completed successfully
+2025-02-09 12:52:50,356 - INFO - Writing content to /tmp/deploy_407bf839/app/auth/token.py
+2025-02-09 12:52:51,454 - INFO - File write completed successfully
+2025-02-09 12:52:51,454 - INFO - Writing content to /tmp/deploy_407bf839/app/auth/config.json
+2025-02-09 12:52:52,555 - INFO - File write completed successfully
+2025-02-09 12:52:52,557 - INFO - Writing content to /tmp/deploy_407bf839/app/api/inference.py
+2025-02-09 12:52:53,686 - INFO - File write completed successfully
+2025-02-09 12:52:53,688 - INFO - Writing content to /tmp/deploy_407bf839/app/api/token.py
+2025-02-09 12:52:54,785 - INFO - File write completed successfully
+2025-02-09 12:52:54,785 - INFO - Executing command: cd /tmp/deploy_407bf839 && docker build -t test-user-apple-openelm-270m:46d5bb07 .
+2025-02-09 12:55:36,156 - INFO - Executing command: docker images test-user-apple-openelm-270m:46d5bb07 --quiet
+2025-02-09 12:55:37,373 - DEBUG - Command output: b459292b1295
+2025-02-09 12:55:37,373 - INFO - Executing command: docker run -d -p 8657:8000 test-user-apple-openelm-270m:46d5bb07
+2025-02-09 12:55:38,886 - DEBUG - Command output: cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041
+2025-02-09 12:55:38,886 - INFO - Executing command: docker inspect --format='{{.State.Status}}' cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041
+2025-02-09 12:55:40,119 - DEBUG - Command output: running
+2025-02-09 12:55:40,119 - INFO - Executing command: docker inspect --format='{{json .NetworkSettings}}' cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041
+2025-02-09 12:55:41,339 - DEBUG - Command output: {"Bridge":"","SandboxID":"c407572141d0bab7762bf49df9ebae82a58264197d6783457ba48ca5971f83d5","SandboxKey":"/var/run/docker/netns/c407572141d0","Ports":{"8000/tcp":[{"HostIp":"0.0.0.0","HostPort":"8657"},{"HostIp":"::","HostPort":"8657"}]},"HairpinMode":false,"LinkLocalIPv6Address":"","LinkLocalIPv6PrefixLen":0,"SecondaryIPAddresses":null,"SecondaryIPv6Addresses":null,"EndpointID":"0ee239923f93a4b0439668d7f2cdb8c85c58fe9912d0d55c549b968c261a945c","Gateway":"172.17.0.1","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"IPAddress":"172.17.0.8","IPPrefixLen":16,"IPv6Gateway":"","MacAddress":"02:42:ac:11:00:08","Networks":{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"MacAddress":"02:42:ac:11:00:08","DriverOpts":null,"NetworkID":"bc6fd91a339efc5da8670cf297d1691964d7bb4fad645b279a23b1303e221346","EndpointID":"0ee239923f93a4b0439668d7f2cdb8c85c58fe9912d0d55c549b968c261a945c","Gateway":"172.17.0.1","IPAddress":"172.17.0.8","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":null}}}
+2025-02-09 12:55:41,339 - INFO - Creating tunnel for port 8657 with subdomain pola-open-elm
+2025-02-09 12:55:41,339 - INFO - Executing command: mkdir -p /tmp/tunnels
+2025-02-09 12:55:42,514 - INFO - Executing command: touch /tmp/tunnels/tunnel_pola-open-elm_8657.log
+2025-02-09 12:55:43,736 - INFO - Executing command: chmod 777 /tmp/tunnels/tunnel_pola-open-elm_8657.log
+2025-02-09 12:55:44,930 - INFO - Executing command: nohup lt --port 8657 --subdomain pola-open-elm > /tmp/tunnels/tunnel_pola-open-elm_8657.log 2>&1 & echo $!
+2025-02-09 12:55:46,137 - DEBUG - Command output: 1202008
+2025-02-09 12:55:46,137 - INFO - Started tunnel process with PID: 1202008
+2025-02-09 12:55:49,156 - INFO - Executing command: cat /tmp/tunnels/tunnel_pola-open-elm_8657.log
+2025-02-09 12:55:49,945 - DEBUG - Command output: your url is: https://pola-open-elm.loca.lt
+/usr/local/lib/node_modules/localtunnel/bin/lt.js:81
+    throw err;
+    ^
+
+Error: connection refused: localtunnel.me:18987 (check your firewall settings)
+    at Socket.<anonymous> (/usr/local/lib/node_modules/localtunnel/lib/TunnelCluster.js:52:11)
+    at Socket.emit (node:events:517:28)
+    at emitErrorNT (node:internal/streams/destroy:151:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+Node.js v18.19.1
+2025-02-09 12:55:49,945 - INFO - Tunnel created successfully: https://pola-open-elm.loca.lt
+2025-02-09 12:55:49,945 - INFO - Writing content to /tmp/tunnels/tunnel_pola-open-elm_8657.pid
+2025-02-09 12:55:51,449 - INFO - File write completed successfully
+2025-02-09 12:55:53,678 - INFO - Executing command: rm -rf /tmp/deploy_407bf839
+2025-02-09 12:55:54,541 - INFO - Closing SFTP connection
+2025-02-09 12:55:54,541 - INFO - Closing SSH connection
+2025-02-09 12:55:54,541 - INFO - All connections closed successfully
+2025-02-09 12:55:54,541 - INFO - Initializing SSH client.
+2025-02-09 12:55:54,541 - INFO - Attempting SSH connection to 24.83.13.62:11000
+2025-02-09 12:55:57,240 - INFO - SSH connection established successfully.
+2025-02-09 12:55:57,240 - INFO - Initializing SFTP connection
+2025-02-09 12:55:58,733 - INFO - SFTP connection established successfully
+2025-02-09 12:55:58,733 - INFO - Executing command: docker logs cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041 2>&1
+2025-02-09 12:55:59,551 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: apple/OpenELM-270M
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-270M:
+- configuration_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-270M:
+- modeling_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+2025-02-09 12:55:59,551 - INFO - Closing SFTP connection
+2025-02-09 12:55:59,551 - INFO - Closing SSH connection
+2025-02-09 12:55:59,551 - INFO - All connections closed successfully

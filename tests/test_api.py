@@ -6,9 +6,9 @@ client = TestClient(app)
 
 def test_deploy_request_print():
     payload = {
-        "model_id": "gpt2-large",
+        "model_id": "apple/OpenELM-270M",
         "user_id": "test-user",
-        "api_name": "gpt2-large",
+        "api_name": "pola-open-elm",
         "ssh_config": {
             "host": "24.83.13.62",
             "username": "tang",

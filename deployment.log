@@ -1,0 +1,34 @@
+2025-02-09 12:52:16,664 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-09 12:52:28,834 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-09 12:52:28,895 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-09 12:52:28,895 - DeploymentService - INFO - Deploying model: apple/OpenELM-270M for user: test-user
+2025-02-09 12:52:31,937 - DeploymentService - INFO - Model type found: text_generation
+2025-02-09 12:52:31,937 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '11000', 'password': 'Yogptcommune1'}
+2025-02-09 12:52:36,180 - DeploymentService - INFO - Verifying Docker service status on remote machine
+2025-02-09 12:52:39,372 - DeploymentService - INFO - Using free port: 8657
+2025-02-09 12:52:39,372 - DeploymentService - INFO - Using image tag: test-user-apple-openelm-270m:46d5bb07
+2025-02-09 12:52:39,372 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_407bf839
+2025-02-09 12:52:47,041 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_407bf839/Dockerfile
+2025-02-09 12:52:48,155 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_407bf839/requirements.txt
+2025-02-09 12:52:49,256 - DeploymentService - INFO - Generated app.py at /tmp/deploy_407bf839/app/app.py
+2025-02-09 12:52:50,356 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_407bf839/app/auth/middleware.py
+2025-02-09 12:52:51,454 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_407bf839/app/auth/token.py
+2025-02-09 12:52:52,555 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_407bf839/app/auth/config.json
+2025-02-09 12:52:53,687 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_407bf839/app/api/inference.py
+2025-02-09 12:52:54,785 - DeploymentService - INFO - Generated api_token at /tmp/deploy_407bf839/app/api/token.py
+2025-02-09 12:52:54,785 - DeploymentService - INFO - Building Docker image on remote machine
+2025-02-09 12:55:37,373 - DeploymentService - INFO - Starting container on remote
+2025-02-09 12:55:40,119 - DeploymentService - INFO - Container cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041 is running
+2025-02-09 12:55:41,339 - DeploymentService - INFO - Creating persistent tunnel for pola-open-elm
+2025-02-09 12:55:51,449 - DeploymentService - INFO - Tunnel created successfully: https://pola-open-elm.loca.lt
+2025-02-09 12:55:53,678 - DeploymentService - INFO - Cleaning up temporary files
+2025-02-09 12:55:54,541 - DeploymentService - INFO - Deployment successful; returning connection details
+2025-02-09 12:55:54,541 - DeploymentService - INFO - Starting log streaming for container cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041
+2025-02-09 12:55:59,551 - DeploymentService - INFO - Container cb5163226dddb75abb9e324dae442a7671c91244338f1b8360405b0432c4f041 logs:
+INFO:app.app:Loading model and tokenizer for: apple/OpenELM-270M
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-270M:
+- configuration_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-270M:
+- modeling_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.

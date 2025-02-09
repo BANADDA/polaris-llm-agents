@@ -3,3 +3,10 @@ app/templates/model_server/auth/config.json.j2
 
 # Ignore database configuration file
 app/config/db.json
+
+# Logs
+deployment.log
+ssh_tunnel.log
+
+# Unit tests
+.pytest_cache/

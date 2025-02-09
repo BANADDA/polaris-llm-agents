@@ -32,8 +32,8 @@ RUN git clone --recurse-submodules -j8 https://github.com/abetlen/llama-cpp-pyth
 # Copy application code
 COPY . .
 
-# Create entrypoint script
-RUN echo '#!/bin/bash\ncd /app && exec uvicorn app.app:app --host 0.0.0.0 --port 8000' > /entrypoint.sh && \
+# Create entrypoint script with increased timeout
+RUN echo '#!/bin/bash\ncd /app && exec uvicorn app.app:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 120' > /entrypoint.sh && \
     chmod +x /entrypoint.sh
 
 # Use entrypoint script
