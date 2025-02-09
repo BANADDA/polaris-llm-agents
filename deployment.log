@@ -1,0 +1,38 @@
+2025-02-09 17:28:16,998 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-09 17:28:34,332 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-09 17:28:34,384 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-09 17:28:34,384 - DeploymentService - INFO - Deploying model: apple/OpenELM-3B for user: test-user
+2025-02-09 17:28:37,292 - DeploymentService - INFO - Model type found: text_generation
+2025-02-09 17:28:37,292 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
+2025-02-09 17:28:41,662 - DeploymentService - INFO - Verifying Docker service status on remote machine
+2025-02-09 17:28:44,873 - DeploymentService - INFO - Using free port: 8492
+2025-02-09 17:28:44,873 - DeploymentService - INFO - Using image tag: test-user-apple-openelm-3b:50ebacb6
+2025-02-09 17:28:44,873 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_9a94741c
+2025-02-09 17:28:52,618 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_9a94741c/Dockerfile
+2025-02-09 17:28:53,766 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_9a94741c/requirements.txt
+2025-02-09 17:28:54,901 - DeploymentService - INFO - Generated app.py at /tmp/deploy_9a94741c/app/app.py
+2025-02-09 17:28:56,015 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_9a94741c/app/auth/middleware.py
+2025-02-09 17:28:57,166 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_9a94741c/app/auth/token.py
+2025-02-09 17:28:58,732 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_9a94741c/app/auth/config.json
+2025-02-09 17:28:59,869 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_9a94741c/app/api/inference.py
+2025-02-09 17:29:00,978 - DeploymentService - INFO - Generated api_token at /tmp/deploy_9a94741c/app/api/token.py
+2025-02-09 17:29:00,978 - DeploymentService - INFO - Building Docker image on remote machine
+2025-02-09 17:34:15,975 - DeploymentService - INFO - Build result: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+2025-02-09 17:34:17,131 - DeploymentService - INFO - Starting container on remote
+2025-02-09 17:34:20,265 - DeploymentService - INFO - Container 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9 is running
+2025-02-09 17:34:21,582 - DeploymentService - INFO - Creating persistent tunnel for polaris-openelm-3B
+2025-02-09 17:34:31,802 - DeploymentService - INFO - Tunnel created successfully: https://polaris-openelm-3b.loca.lt
+2025-02-09 17:34:34,055 - DeploymentService - INFO - Cleaning up temporary files
+2025-02-09 17:34:34,914 - DeploymentService - INFO - Deployment successful; returning connection details
+2025-02-09 17:34:34,916 - DeploymentService - INFO - Starting log streaming for container 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9
+2025-02-09 17:34:39,999 - DeploymentService - INFO - Container 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9 logs:
+INFO:app.app:Loading model and tokenizer for: apple/OpenELM-3B
+INFO:app.app:Loading OpenELM with Llama tokenizer
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-3B:
+- configuration_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-3B:
+- modeling_openelm.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.

@@ -6,13 +6,13 @@ client = TestClient(app)
 
 def test_deploy_request_print():
     payload = {
-        "model_id": "apple/OpenELM-270M",
+        "model_id": "apple/OpenELM-3B",
         "user_id": "test-user",
-        "api_name": "polaris-openelm-test-123",
+        "api_name": "polaris-openelm-3B",
         "ssh_config": {
             "host": "24.83.13.62",
             "username": "tang",
-            "port": "14000",
+            "port": "15000",
             "password": "Yogptcommune1"
         }
     }

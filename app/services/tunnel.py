@@ -13,6 +13,7 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
+
 class SSHTunnel:
     def __init__(self, ssh_config: Dict):
         self.config = ssh_config
@@ -24,9 +25,12 @@ class SSHTunnel:
             logger.info("Initializing SSH client.")
             self.client = paramiko.SSHClient()
             self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            logger.info("Attempting SSH connection to %s:%s",
-                        self.config['host'], self.config.get('port', 22))
-            
+            logger.info(
+                "Attempting SSH connection to %s:%s",
+                self.config['host'],
+                self.config.get('port', 22)
+            )
+
             # Connect with keepalive options
             self.client.connect(
                 hostname=self.config['host'],
@@ -37,11 +41,11 @@ class SSHTunnel:
                 allow_agent=False,
                 timeout=30
             )
-            
+
             # Enable keepalive packets
             transport = self.client.get_transport()
             transport.set_keepalive(15)  # Send keepalive every 15 seconds
-            
+
             logger.info("SSH connection established successfully.")
             logger.info("Initializing SFTP connection")
             self.sftp = self.client.open_sftp()
@@ -64,23 +68,23 @@ class SSHTunnel:
             channel = self.client.get_transport().open_session()
             channel.settimeout(timeout)
             channel.exec_command(command)
-            
+
             stdout = channel.makefile('rb', -1)
             stderr = channel.makefile_stderr('rb', -1)
-            
+
             output = stdout.read().decode().strip()
             error = stderr.read().decode().strip()
-            
+
             exit_status = channel.recv_exit_status()
-            
+
             if error:
                 logger.error("Command error output: %s", error)
             if output:
                 logger.debug("Command output: %s", output)
-            
+
             if exit_status != 0:
                 raise Exception(f"Command failed with status {exit_status}: {error}")
-                
+
             return error if error else output
         except Exception as e:
             logger.error("Command execution failed: %s", e)
@@ -124,20 +128,51 @@ class SSHTunnel:
     async def check_and_install_dependencies(self):
         """Check if npm and localtunnel are installed, install if missing."""
         try:
+            # Check for npm installation without raising exception on failure
             logger.info("Checking for npm installation")
-            npm_check = await self.execute_command("which npm")
-            if not npm_check:
+            try:
+                npm_check = await self.execute_command("which npm")
+                npm_installed = bool(npm_check)
+            except Exception:
+                npm_installed = False
+
+            if not npm_installed:
                 logger.info("Installing npm...")
-                await self.execute_command(f'echo "{self.config["password"]}" | sudo -S apt-get update')
-                await self.execute_command(f'echo "{self.config["password"]}" | sudo -S apt-get install -y npm')
-            
-            logger.info("Checking for localtunnel installation")
-            lt_check = await self.execute_command("which lt")
-            if not lt_check:
-                logger.info("Installing localtunnel globally...")
-                await self.execute_command(f'echo "{self.config["password"]}" | sudo -S npm install -g localtunnel')
-            
+                try:
+                    # Update package list first
+                    update_cmd = f'echo "{self.config["password"]}" | sudo -S apt-get update'
+                    await self.execute_command(update_cmd)
+
+                    # Install npm
+                    install_cmd = f'echo "{self.config["password"]}" | sudo -S apt-get install -y npm'
+                    await self.execute_command(install_cmd)
+                    logger.info("npm installation completed")
+                except Exception as e:
+                    logger.error(f"Failed to install npm: {e}")
+                    return False
+
+            # Check for localtunnel only if npm is available
+            if npm_installed or await self.execute_command("which npm"):
+                logger.info("Checking for localtunnel installation")
+                try:
+                    lt_check = await self.execute_command("which lt")
+                    lt_installed = bool(lt_check)
+                except Exception:
+                    lt_installed = False
+
+                if not lt_installed:
+                    logger.info("Installing localtunnel globally...")
+                    try:
+                        await self.execute_command(
+                            f'echo "{self.config["password"]}" | sudo -S npm install -g localtunnel'
+                        )
+                        logger.info("localtunnel installation completed")
+                    except Exception as e:
+                        logger.error(f"Failed to install localtunnel: {e}")
+                        return False
+
             return True
+
         except Exception as e:
             logger.error(f"Error checking/installing dependencies: {e}")
             return False
@@ -146,27 +181,29 @@ class SSHTunnel:
         """Create a tunnel using nohup as fallback."""
         try:
             logger.info(f"Creating tunnel for port {port} with subdomain {subdomain}")
-            
+
             # Create log directory first and ensure proper name formatting
             safe_subdomain = subdomain.replace("/", "-").replace(".", "-").lower()
             log_dir = "/tmp/tunnels"
             log_file = f"{log_dir}/tunnel_{safe_subdomain}_{port}.log"
-            
+
             # Create directory and log file with proper permissions
             await self.execute_command(f'mkdir -p {log_dir}')
             await self.execute_command(f'touch {log_file}')
             await self.execute_command(f'chmod 777 {log_file}')
-            
+
             # Start tunnel process in background
-            tunnel_cmd = f"nohup lt --port {port} --subdomain {safe_subdomain} > {log_file} 2>&1 & echo $!"
+            tunnel_cmd = (
+                f"nohup lt --port {port} --subdomain {safe_subdomain} > {log_file} 2>&1 & echo $!"
+            )
             pid = await self.execute_command(tunnel_cmd)
             logger.info(f"Started tunnel process with PID: {pid}")
-            
+
             # Wait for tunnel to establish
             max_retries = 5
             for attempt in range(max_retries):
                 await asyncio.sleep(3)
-                
+
                 # Check log for URL
                 try:
                     log_content = await self.execute_command(f"cat {log_file}")
@@ -174,18 +211,18 @@ class SSHTunnel:
                         if 'your url is:' in line.lower():
                             tunnel_url = line.split('your url is:')[-1].strip()
                             logger.info(f"Tunnel created successfully: {tunnel_url}")
-                            
+
                             # Save PID for future reference
                             await self.write_file(f"{log_dir}/tunnel_{safe_subdomain}_{port}.pid", pid)
                             return tunnel_url
                 except Exception as e:
                     logger.warning(f"Error reading log file on attempt {attempt + 1}: {e}")
-                
+
                 logger.warning(f"URL not found in logs on attempt {attempt + 1}")
-            
+
             logger.error("Failed to create tunnel after maximum retries")
             return None
-            
+
         except Exception as e:
             logger.error(f"Error creating tunnel: {e}")
             return None
@@ -197,7 +234,7 @@ class SSHTunnel:
             log_dir = "/tmp/tunnels"
             pid_file = f"{log_dir}/tunnel_{safe_subdomain}_{port}.pid"
             log_file = f"{log_dir}/tunnel_{safe_subdomain}_{port}.log"
-            
+
             # Try to get PID from file
             try:
                 pid = await self.execute_command(f"cat {pid_file}")
@@ -205,13 +242,13 @@ class SSHTunnel:
                 is_running = bool(ps_check)
             except Exception:
                 is_running = False
-            
+
             # Get logs if available
             try:
                 logs = await self.execute_command(f"tail -n 20 {log_file}")
             except Exception:
                 logs = "No logs available"
-            
+
             return {
                 "active": is_running,
                 "logs": logs,
