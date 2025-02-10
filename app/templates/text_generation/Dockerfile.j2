@@ -5,6 +5,7 @@ WORKDIR /app
 ENV MODEL_ID="{{ model_id }}"
 ENV USER_ID="{{ user_id }}"
 ENV PYTHONPATH=/app
+ENV HF_TOKEN="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"
 
 # Install system dependencies including build tools
 RUN apt-get update && apt-get install -y \
@@ -19,6 +20,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
+RUN pip install -U bitsandbytes
 
 {% if use_llama_cpp %}
 # Build and install llama-cpp-python with CUDA support

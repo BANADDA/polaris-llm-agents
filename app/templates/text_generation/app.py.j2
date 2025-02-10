@@ -1,15 +1,31 @@
-from fastapi import FastAPI, Depends, HTTPException 
-from typing import Dict 
-import os 
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.responses import StreamingResponse
+from typing import Dict, Optional, AsyncGenerator
+import os
 import logging
+import uuid
+import json
+import asyncio
+from datetime import datetime
+from functools import partial
+from queue import Queue
+from threading import Thread
 
 {% if use_llama_cpp %}
 from llama_cpp import Llama
-{% else %}
-from transformers import AutoModelForCausalLM, AutoTokenizer
 {% endif %}
+from transformers import (
+    AutoModelForCausalLM, 
+    AutoTokenizer, 
+    TextIteratorStreamer,
+    StoppingCriteria, 
+    StoppingCriteriaList
+)
+import torch
+
 from app.auth.middleware import verify_token
 from app.auth.token import TokenManager
+from firebase_admin import firestore
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,82 +33,381 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 model_id = os.getenv("MODEL_ID")
+db = firestore.client()
+
+class StoppingCriteriaSub(StoppingCriteria):
+    def __init__(self, stops=[], tokenizer=None):
+        super().__init__()
+        self.stops = [tokenizer.encode(stop, return_tensors='pt')[0] for stop in stops]
+
+    def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
+        for stop in self.stops:
+            if torch.all((input_ids[0][-len(stop):] == stop)).item():
+                return True
+        return False
+
+def is_llama_model(model_id: str) -> bool:
+    """Check if the model should use llama.cpp backend"""
+    llama_identifiers = ["llama", "alpaca", "vicuna", "wizard"]
+    return any(identifier in model_id.lower() for identifier in llama_identifiers)
+
+def is_openelm_model(model_id: str) -> bool:
+    """Check if model is OpenELM"""
+    return "openelm" in model_id.lower()
+
+def is_deepseek_model(model_id: str) -> bool:
+    """Check if model is DeepSeek"""
+    return "deepseek" in model_id.lower()
 
 # Initialize model with error handling
 try:
-    # Try to authenticate with HuggingFace if token is provided
-    hf_token = os.getenv("HF_TOKEN")
-
-    {% if use_llama_cpp %}
-    logger.info(f"Loading Llama model from: /app/{model_id}")
-    model = Llama(
-        model_path=f"/app/{model_id}",
-        n_gpu_layers=-1,  # Use all GPU layers
-        n_ctx=2048        # Context window
-    )
-    logger.info("Llama model loaded successfully")
-    {% else %}
+    hf_token = os.getenv("HF_TOKEN", "")
     logger.info(f"Loading model and tokenizer for: {model_id}")
     
-    if "OpenELM" in model_id:
-        logger.info("Loading OpenELM with Llama tokenizer")
-        tokenizer = AutoTokenizer.from_pretrained(
-            "meta-llama/Llama-2-7b-hf",
-            token=hf_token,
-            trust_remote_code=True
+    if is_llama_model(model_id):
+        logger.info("Loading Llama model using llama.cpp backend")
+        model = Llama(
+            model_path=f"/app/{model_id}",
+            n_ctx=2048,
+            n_batch=512,
+            n_gpu_layers=-1
         )
+        logger.info("Llama model loaded successfully")
+        backend = "llama.cpp"
+    else:
+        logger.info("Loading model using transformers backend")
+        backend = "transformers"
+        
+        if is_openelm_model(model_id):
+            logger.info("Loading OpenELM with Llama tokenizer")
+            tokenizer = AutoTokenizer.from_pretrained(
+                "meta-llama/Llama-2-7b-hf",
+                token=hf_token,
+                trust_remote_code=True
+            )
+        elif is_deepseek_model(model_id):
+            logger.info("Loading DeepSeek tokenizer")
+            tokenizer = AutoTokenizer.from_pretrained(
+                model_id,
+                trust_remote_code=True
+            )
+        else:
+            logger.info("Loading standard tokenizer")
+            tokenizer = AutoTokenizer.from_pretrained(model_id)
+            
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token
             tokenizer.pad_token_id = tokenizer.eos_token_id
             
-        model = AutoModelForCausalLM.from_pretrained(
-            model_id,
-            trust_remote_code=True,
-            token=hf_token if hf_token else None,
-            device_map="auto",
-            torch_dtype="auto"
-        )
-    else:
-        model = AutoModelForCausalLM.from_pretrained(model_id)
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
-    logger.info("Model and tokenizer loaded successfully")
-    {% endif %}
+        # Try GPU first, fall back to CPU if needed
+        cuda_available = False
+        try:
+            if torch.cuda.is_available():
+                test_tensor = torch.tensor([1.0], device="cuda")
+                del test_tensor
+                cuda_available = True
+                logger.info("CUDA test successful")
+        except Exception as cuda_error:
+            logger.warning(f"CUDA test failed: {str(cuda_error)}")
+            cuda_available = False
+            
+        try:
+            if cuda_available:
+                logger.info("Loading model with CUDA optimizations")
+                model = AutoModelForCausalLM.from_pretrained(
+                    model_id,
+                    token=hf_token if is_openelm_model(model_id) else None,
+                    trust_remote_code=True,
+                    device_map="auto",
+                    torch_dtype=torch.float16,
+                    load_in_8bit=True
+                )
+            else:
+                logger.info("Loading model in CPU mode with optimizations")
+                torch.set_num_threads(4)
+                model = AutoModelForCausalLM.from_pretrained(
+                    model_id,
+                    token=hf_token if is_openelm_model(model_id) else None,
+                    trust_remote_code=True,
+                    device_map="cpu",
+                    torch_dtype=torch.float32,
+                    low_cpu_mem_usage=True
+                )
+        except Exception as model_error:
+            logger.error(f"Error loading model: {str(model_error)}")
+            raise
+            
+    logger.info(f"Model loaded successfully using {backend} backend")
+    
 except Exception as e:
     logger.error(f"Error loading model: {str(e)}")
     raise RuntimeError(f"Failed to load model: {str(e)}")
 
-@app.post("/inference")
-async def generate(prompt: str, token: str = Depends(verify_token)):
+async def get_chat_history(user_id: str, chat_id: str) -> list:
+    """Retrieve chat history from Firestore"""
+    safe_model_id = model_id.replace("/", "-").lower()
+    full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
+    doc = db.collection('chats').document(full_chat_id).get()
+    if not doc.exists:
+        raise HTTPException(status_code=404, detail="Chat not found")
+    return doc.to_dict().get('messages', [])
+
+async def save_message(user_id: str, chat_id: str, role: str, content: str):
+    """Save a message to the chat history"""
+    safe_model_id = model_id.replace("/", "-").lower()
+    full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
+    chat_ref = db.collection('chats').document(full_chat_id)
+    
+    chat_ref.update({
+        'messages': firestore.ArrayUnion([{
+            'role': role,
+            'content': content,
+            'timestamp': datetime.now()
+        }]),
+        'last_updated': datetime.now()
+    })
+
+@app.post("/chat/{chat_id}/message")
+async def chat_message(
+    chat_id: str, 
+    prompt: str, 
+    token_data: dict = Depends(verify_token)
+):
     try:
-        {% if use_llama_cpp %}
-        logger.info("Generating response with Llama model")
-        output = model(
-            prompt,
-            max_tokens=100,
-            temperature=0.7,
-            top_p=0.95,
-            echo=False
+        user_id = token_data['user_id']
+        history = await get_chat_history(user_id, chat_id)
+        
+        async def generate() -> AsyncGenerator[str, None]:
+            logger.info("Generating response")
+            
+            # Format history with clear separation and structure
+            formatted_history = []
+            if history:
+                # Get last few messages but maintain conversation flow
+                relevant_history = history[-4:]  # Last 4 messages for context
+                for msg in relevant_history:
+                    if msg['role'] == 'user':
+                        formatted_history.append(f"Human: {msg['content'].strip()}")
+                    else:
+                        formatted_history.append(f"Assistant: {msg['content'].strip()}")
+            
+            # Build context-aware prompt
+            system_prompt = """You are a helpful AI assistant focused on providing accurate, factual responses. 
+            Important instructions:
+            - Provide accurate information based on facts
+            - Stay focused on the current question
+            - Acknowledge uncertainty when appropriate
+            - Use formal, clear language
+            - Build upon previous context when relevant
+            - Avoid speculation or making up information
+            """
+            
+            context = "\n".join(formatted_history) if formatted_history else ""
+            if context:
+                full_prompt = f"{system_prompt}\n\nPrevious conversation:\n{context}\n\nHuman: {prompt.strip()}\nAssistant: Let me provide a clear and accurate response."
+            else:
+                full_prompt = f"{system_prompt}\n\nHuman: {prompt.strip()}\nAssistant: Let me provide a clear and accurate response."
+            
+            try:
+                if backend == "llama.cpp":
+                    response = model(
+                        full_prompt,
+                        max_tokens=250,
+                        temperature=0.6,
+                        top_p=0.9,
+                        echo=False,
+                        stream=True,
+                        stop=["Human:", "Assistant:"]
+                    )
+                    
+                    buffer = ""
+                    current_sentence = ""
+                    
+                    for chunk in response:
+                        text = chunk['choices'][0]['text']
+                        if text:
+                            current_sentence += text
+                            
+                            if any(current_sentence.rstrip().endswith(p) for p in ['.', '!', '?', ':', '\n']):
+                                buffer += current_sentence
+                                if len(buffer) >= 30:
+                                    yield f"data: {json.dumps({'text': buffer.strip()})}\n\n"
+                                    buffer = ""
+                                current_sentence = ""
+                    
+                    # Send any remaining text
+                    remaining = (buffer + current_sentence).strip()
+                    if remaining:
+                        yield f"data: {json.dumps({'text': remaining})}\n\n"
+                    
+                else:
+                    inputs = tokenizer(
+                        full_prompt,
+                        return_tensors="pt",
+                        padding=True,
+                        truncation=True,
+                        max_length=2048
+                    )
+                    
+                    inputs = {k: v.to(model.device) for k, v in inputs.items()}
+                    streamer = TextIteratorStreamer(
+                        tokenizer, 
+                        skip_prompt=True, 
+                        skip_special_tokens=True
+                    )
+                    
+                    def generate_in_thread():
+                        try:
+                            with torch.no_grad():
+                                model.generate(
+                                    **inputs,
+                                    max_new_tokens=150,
+                                    do_sample=True,
+                                    temperature=0.6,
+                                    top_p=0.9,
+                                    repetition_penalty=1.2,
+                                    no_repeat_ngram_size=3,
+                                    pad_token_id=tokenizer.pad_token_id,
+                                    streamer=streamer,
+                                    stopping_criteria=StoppingCriteriaList([
+                                        StoppingCriteriaSub(
+                                            ["Human:", "Assistant:", "\n\n"],
+                                            tokenizer
+                                        )
+                                    ])
+                                )
+                        except Exception as e:
+                            logger.error(f"Generation error: {str(e)}")
+                    
+                    Thread(target=generate_in_thread).start()
+                    
+                    buffer = ""
+                    current_sentence = ""
+                    
+                    for new_text in streamer:
+                        # Clean up text and maintain sentence structure
+                        text = " ".join(new_text.split())
+                        if text:
+                            current_sentence += text + " "
+                            
+                            # Check for natural break points
+                            if any(current_sentence.rstrip().endswith(p) for p in ['.', '!', '?', ':', '\n']):
+                                buffer += current_sentence
+                                if len(buffer) >= 30:
+                                    yield f"data: {json.dumps({'text': buffer.strip()})}\n\n"
+                                    buffer = ""
+                                current_sentence = ""
+                    
+                    # Send any remaining text
+                    remaining = (buffer + current_sentence).strip()
+                    if remaining:
+                        yield f"data: {json.dumps({'text': remaining})}\n\n"
+                
+                # Save messages after successful generation
+                await save_message(user_id, chat_id, "user", prompt.strip())
+                await save_message(user_id, chat_id, "assistant", buffer.strip())
+                    
+            except Exception as e:
+                logger.error(f"Error during generation: {e}")
+                yield f"data: {json.dumps({'error': str(e)})}\n\n"
+        
+        return StreamingResponse(
+            generate(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no"
+            }
         )
-        return {"response": output['choices'][0]['text']}
-        {% else %}
-        logger.info("Generating response with Transformers model")
-        inputs = tokenizer(prompt, return_tensors="pt", padding=True)
-        if "OpenELM" in model_id:
-            inputs = inputs.to(model.device)
-        outputs = model.generate(
-            **inputs,
-            max_length=150,
-            do_sample=True,
-            temperature=0.8,
-            top_k=50,
-            top_p=0.95,
-            pad_token_id=tokenizer.pad_token_id
-        )
-        response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return {"response": response_text}
-        {% endif %}
+        
     except Exception as e:
-        logger.error(f"Error during inference: {str(e)}")
+        logger.error(f"Error during chat: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/chat/{chat_id}/history")
+async def get_chat_messages(
+    chat_id: str, 
+    token_data: dict = Depends(verify_token)
+):
+    try:
+        user_id = token_data['user_id']
+        history = await get_chat_history(user_id, chat_id)
+        return {"history": history}
+    except Exception as e:
+        logger.error(f"Error getting chat history: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/chats")
+async def create_chat(token_data: dict = Depends(verify_token)):
+    """Create a new chat and return its ID"""
+    try:
+        user_id = token_data['user_id']
+        safe_model_id = model_id.replace("/", "-").lower()
+        
+        chat_id = str(uuid.uuid4())[:8]
+        full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
+        
+        db.collection('chats').document(full_chat_id).set({
+            'user_id': user_id,
+            'model_id': model_id,
+            'created_at': datetime.now(),
+            'last_updated': datetime.now(),
+            'active': True,
+            'messages': []
+        })
+        
+        return {
+            "chat_id": chat_id,
+            "created_at": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"Error creating chat: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/chats")
+async def list_chats(token_data: dict = Depends(verify_token)):
+    """List all active chats for the user"""
+    try:
+        user_id = token_data['user_id']
+        
+        chats = db.collection('chats')\
+            .where('user_id', '==', user_id)\
+            .where('model_id', '==', model_id)\
+            .where('active', '==', True)\
+            .stream()
+            
+        return {
+            "chats": [{
+                'chat_id': chat.id.split('-')[-1],
+                'created_at': chat.get('created_at'),
+                'last_updated': chat.get('last_updated'), 
+                'message_count': len(chat.get('messages', []))
+            } for chat in chats]
+        }
+    except Exception as e:
+        logger.error(f"Error listing chats: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/chat/{chat_id}")
+async def delete_chat(
+    chat_id: str, 
+    token_data: dict = Depends(verify_token)
+):
+    """Soft delete a chat"""
+    try:
+        user_id = token_data['user_id']
+        safe_model_id = model_id.replace("/", "-").lower()
+        
+        db.collection('chats').document(f"{user_id}-{safe_model_id}-{chat_id}").update({
+            'active': False,
+            'deleted_at': datetime.now()
+        })
+        
+        return {"status": "deleted"}
+    except Exception as e:
+        logger.error(f"Error deleting chat: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/token")
@@ -106,4 +421,22 @@ async def get_token(user_id: str, model_id: str):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "model_id": model_id}
+    status = {
+        "status": "healthy",
+        "model_id": model_id,
+        "backend": backend
+    }
+    
+    if backend == "llama.cpp":
+        status.update({
+            "n_ctx": model.n_ctx,
+            "n_gpu_layers": model.n_gpu_layers
+        })
+    else:
+        status.update({
+            "device": str(getattr(model, 'device', 'cpu')),
+            "cuda_available": torch.cuda.is_available(),
+            "cpu_threads": torch.get_num_threads()
+        })
+    
+    return status

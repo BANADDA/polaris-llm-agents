@@ -1,92 +1,85 @@
-2025-02-09 17:28:37,292 - INFO - Initializing SSH client.
-2025-02-09 17:28:37,293 - INFO - Attempting SSH connection to 24.83.13.62:15000
-2025-02-09 17:28:40,138 - INFO - SSH connection established successfully.
-2025-02-09 17:28:40,138 - INFO - Initializing SFTP connection
-2025-02-09 17:28:41,662 - INFO - SFTP connection established successfully
-2025-02-09 17:28:41,662 - INFO - Executing command: docker ps
-2025-02-09 17:28:42,484 - DEBUG - Command output: CONTAINER ID   IMAGE                                   COMMAND            CREATED          STATUS          PORTS                                       NAMES
-1d8af6fbab92   test-user-apple-openelm-270m:1357d819   "/entrypoint.sh"   7 minutes ago    Up 7 minutes    0.0.0.0:8016->8000/tcp, :::8016->8000/tcp   dreamy_chatterjee
-56de52bbff00   test-user-apple-openelm-270m:7fe2359c   "/entrypoint.sh"   43 minutes ago   Up 43 minutes   0.0.0.0:8655->8000/tcp, :::8655->8000/tcp   nostalgic_franklin
-3a18f6fe4f0e   test-user-apple-openelm-270m:baacc99f   "/entrypoint.sh"   2 hours ago      Up 2 hours      0.0.0.0:8227->8000/tcp, :::8227->8000/tcp   beautiful_cartwright
-230023dee897   test-user-apple-openelm-270m:95b918ef   "/entrypoint.sh"   2 hours ago      Up 2 hours      0.0.0.0:8780->8000/tcp, :::8780->8000/tcp   goofy_archimedes
-8a51b4e42dcf   test-user-apple-openelm-270m:73a93cd9   "/entrypoint.sh"   2 hours ago      Up 2 hours      0.0.0.0:8822->8000/tcp, :::8822->8000/tcp   wonderful_shamir
-99b7b52a9424   test-user-apple-openelm-270m:bdb13496   "/entrypoint.sh"   2 hours ago      Up 2 hours      0.0.0.0:8299->8000/tcp, :::8299->8000/tcp   sleepy_hopper
-58c697bcc51b   test-user-apple-openelm-270m:d574959b   "/entrypoint.sh"   3 hours ago      Up 3 hours      0.0.0.0:8491->8000/tcp, :::8491->8000/tcp   gracious_spence
-a4ed33a33300   test-user-apple-openelm-270m:1f9a50fd   "/entrypoint.sh"   3 hours ago      Up 3 hours      0.0.0.0:8779->8000/tcp, :::8779->8000/tcp   vibrant_easley
-2025-02-09 17:28:42,484 - INFO - Checking for npm installation
-2025-02-09 17:28:42,484 - INFO - Executing command: which npm
-2025-02-09 17:28:43,663 - DEBUG - Command output: /usr/bin/npm
-2025-02-09 17:28:43,663 - INFO - Checking for localtunnel installation
-2025-02-09 17:28:43,663 - INFO - Executing command: which lt
-2025-02-09 17:28:44,872 - DEBUG - Command output: /usr/local/bin/lt
-2025-02-09 17:28:44,872 - INFO - Selected random port: 8492
-2025-02-09 17:28:44,873 - INFO - Executing command: mkdir -p /tmp/deploy_9a94741c
-2025-02-09 17:28:46,108 - INFO - Executing command: mkdir -p /tmp/deploy_9a94741c/app/auth
-2025-02-09 17:28:47,293 - INFO - Executing command: mkdir -p /tmp/deploy_9a94741c/app/api
-2025-02-09 17:28:48,501 - INFO - Writing content to /tmp/deploy_9a94741c/app/__init__.py
-2025-02-09 17:28:50,044 - INFO - File write completed successfully
-2025-02-09 17:28:50,044 - INFO - Writing content to /tmp/deploy_9a94741c/app/auth/__init__.py
-2025-02-09 17:28:50,771 - INFO - File write completed successfully
-2025-02-09 17:28:50,771 - INFO - Writing content to /tmp/deploy_9a94741c/app/api/__init__.py
-2025-02-09 17:28:51,528 - INFO - File write completed successfully
-2025-02-09 17:28:51,528 - INFO - Writing content to /tmp/deploy_9a94741c/Dockerfile
-2025-02-09 17:28:52,618 - INFO - File write completed successfully
-2025-02-09 17:28:52,618 - INFO - Writing content to /tmp/deploy_9a94741c/requirements.txt
-2025-02-09 17:28:53,766 - INFO - File write completed successfully
-2025-02-09 17:28:53,771 - INFO - Writing content to /tmp/deploy_9a94741c/app/app.py
-2025-02-09 17:28:54,901 - INFO - File write completed successfully
-2025-02-09 17:28:54,901 - INFO - Writing content to /tmp/deploy_9a94741c/app/auth/middleware.py
-2025-02-09 17:28:56,015 - INFO - File write completed successfully
-2025-02-09 17:28:56,015 - INFO - Writing content to /tmp/deploy_9a94741c/app/auth/token.py
-2025-02-09 17:28:57,166 - INFO - File write completed successfully
-2025-02-09 17:28:57,167 - INFO - Writing content to /tmp/deploy_9a94741c/app/auth/config.json
-2025-02-09 17:28:58,732 - INFO - File write completed successfully
-2025-02-09 17:28:58,733 - INFO - Writing content to /tmp/deploy_9a94741c/app/api/inference.py
-2025-02-09 17:28:59,869 - INFO - File write completed successfully
-2025-02-09 17:28:59,872 - INFO - Writing content to /tmp/deploy_9a94741c/app/api/token.py
-2025-02-09 17:29:00,978 - INFO - File write completed successfully
-2025-02-09 17:29:00,978 - INFO - Executing command: cd /tmp/deploy_9a94741c && docker build -t test-user-apple-openelm-3b:50ebacb6 .
-2025-02-09 17:34:15,896 - ERROR - Command error output: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+2025-02-10 15:44:31,807 - INFO - Initializing SSH client.
+2025-02-10 15:44:31,808 - INFO - Attempting SSH connection to 24.83.13.62:15000
+2025-02-10 15:44:33,872 - INFO - SSH connection established successfully.
+2025-02-10 15:44:33,872 - INFO - Initializing SFTP connection
+2025-02-10 15:44:34,985 - INFO - SFTP connection established successfully
+2025-02-10 15:44:34,985 - INFO - Executing command: docker ps
+2025-02-10 15:44:35,597 - DEBUG - Command output: CONTAINER ID   IMAGE                                   COMMAND            CREATED             STATUS             PORTS                                       NAMES
+51112c7b2b9e   test-user-apple-openelm-1_1b:73ed1609   "/entrypoint.sh"   11 minutes ago      Up 11 minutes      0.0.0.0:8836->8000/tcp, :::8836->8000/tcp   exciting_chaplygin
+5dbde5f68713   test-user-apple-openelm-1_1b:215d8043   "/entrypoint.sh"   33 minutes ago      Up 33 minutes      0.0.0.0:8947->8000/tcp, :::8947->8000/tcp   thirsty_mcclintock
+5308fea0f2e8   test-user-apple-openelm-1_1b:83f165d4   "/entrypoint.sh"   48 minutes ago      Up 47 minutes      0.0.0.0:8537->8000/tcp, :::8537->8000/tcp   focused_lumiere
+4e5a0e8ee91c   test-user-apple-openelm-1_1b:cc8efc79   "/entrypoint.sh"   About an hour ago   Up About an hour   0.0.0.0:8762->8000/tcp, :::8762->8000/tcp   beautiful_feistel
+45af4beeb75d   test-user-apple-openelm-1_1b:fea088fe   "/entrypoint.sh"   5 hours ago         Up 5 hours         0.0.0.0:8150->8000/tcp, :::8150->8000/tcp   crazy_euler
+2025-02-10 15:44:35,597 - INFO - Checking for npm installation
+2025-02-10 15:44:35,597 - INFO - Executing command: which npm
+2025-02-10 15:44:36,492 - DEBUG - Command output: /usr/bin/npm
+2025-02-10 15:44:36,492 - INFO - Checking for localtunnel installation
+2025-02-10 15:44:36,492 - INFO - Executing command: which lt
+2025-02-10 15:44:37,382 - DEBUG - Command output: /usr/local/bin/lt
+2025-02-10 15:44:37,383 - INFO - Selected random port: 8093
+2025-02-10 15:44:37,383 - INFO - Executing command: mkdir -p /tmp/deploy_28165c4f
+2025-02-10 15:44:38,267 - INFO - Executing command: mkdir -p /tmp/deploy_28165c4f/app/auth
+2025-02-10 15:44:39,156 - INFO - Executing command: mkdir -p /tmp/deploy_28165c4f/app/api
+2025-02-10 15:44:40,041 - INFO - Writing content to /tmp/deploy_28165c4f/app/__init__.py
+2025-02-10 15:44:41,160 - INFO - File write completed successfully
+2025-02-10 15:44:41,160 - INFO - Writing content to /tmp/deploy_28165c4f/app/auth/__init__.py
+2025-02-10 15:44:41,698 - INFO - File write completed successfully
+2025-02-10 15:44:41,698 - INFO - Writing content to /tmp/deploy_28165c4f/app/api/__init__.py
+2025-02-10 15:44:42,238 - INFO - File write completed successfully
+2025-02-10 15:44:42,243 - INFO - Writing content to /tmp/deploy_28165c4f/Dockerfile
+2025-02-10 15:44:43,054 - INFO - File write completed successfully
+2025-02-10 15:44:43,057 - INFO - Writing content to /tmp/deploy_28165c4f/requirements.txt
+2025-02-10 15:44:43,863 - INFO - File write completed successfully
+2025-02-10 15:44:43,903 - INFO - Writing content to /tmp/deploy_28165c4f/app/app.py
+2025-02-10 15:44:44,714 - INFO - File write completed successfully
+2025-02-10 15:44:44,714 - INFO - Writing content to /tmp/deploy_28165c4f/app/auth/middleware.py
+2025-02-10 15:44:45,521 - INFO - File write completed successfully
+2025-02-10 15:44:45,521 - INFO - Writing content to /tmp/deploy_28165c4f/app/auth/token.py
+2025-02-10 15:44:46,321 - INFO - File write completed successfully
+2025-02-10 15:44:46,329 - INFO - Writing content to /tmp/deploy_28165c4f/app/auth/config.json
+2025-02-10 15:44:47,139 - INFO - File write completed successfully
+2025-02-10 15:44:47,142 - INFO - Writing content to /tmp/deploy_28165c4f/app/api/inference.py
+2025-02-10 15:44:47,959 - INFO - File write completed successfully
+2025-02-10 15:44:47,961 - INFO - Writing content to /tmp/deploy_28165c4f/app/api/token.py
+2025-02-10 15:44:48,771 - INFO - File write completed successfully
+2025-02-10 15:44:48,771 - INFO - Executing command: cd /tmp/deploy_28165c4f && docker build -t test-user-deepseek-ai-deepseek-r1-distill-qwen-7b:d5250de4 .
+2025-02-10 15:50:25,505 - ERROR - Command error output: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
             Install the buildx component to build images with BuildKit:
             https://docs.docker.com/go/buildx/
-2025-02-09 17:34:15,975 - INFO - Executing command: docker images test-user-apple-openelm-3b:50ebacb6 --quiet
-2025-02-09 17:34:17,131 - DEBUG - Command output: 6121c02899db
-2025-02-09 17:34:17,131 - INFO - Executing command: docker run -d -p 8492:8000 -e HF_TOKEN=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 test-user-apple-openelm-3b:50ebacb6
-2025-02-09 17:34:19,010 - DEBUG - Command output: 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9
-2025-02-09 17:34:19,010 - INFO - Executing command: docker inspect --format='{{.State.Status}}' 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9
-2025-02-09 17:34:20,265 - DEBUG - Command output: running
-2025-02-09 17:34:20,265 - INFO - Executing command: docker inspect --format='{{json .NetworkSettings}}' 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9
-2025-02-09 17:34:21,582 - DEBUG - Command output: {"Bridge":"","SandboxID":"8766aec0157225c21d4baa73488ec1fa976e89b89864c3131c851076fe622221","SandboxKey":"/run/snap.docker/netns/8766aec01572","Ports":{"8000/tcp":[{"HostIp":"0.0.0.0","HostPort":"8492"},{"HostIp":"::","HostPort":"8492"}]},"HairpinMode":false,"LinkLocalIPv6Address":"","LinkLocalIPv6PrefixLen":0,"SecondaryIPAddresses":null,"SecondaryIPv6Addresses":null,"EndpointID":"db219f547f13ddcc4f9f43d665e325e0704452d0275cfd47ff0f2546b95590da","Gateway":"172.17.0.1","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"IPAddress":"172.17.0.10","IPPrefixLen":16,"IPv6Gateway":"","MacAddress":"02:42:ac:11:00:0a","Networks":{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"MacAddress":"02:42:ac:11:00:0a","NetworkID":"1c865ec36cb0ef317dadb73394f7c28da5f104dd7e3ec5c114a1cf2f32c31880","EndpointID":"db219f547f13ddcc4f9f43d665e325e0704452d0275cfd47ff0f2546b95590da","Gateway":"172.17.0.1","IPAddress":"172.17.0.10","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DriverOpts":null,"DNSNames":null}}}
-2025-02-09 17:34:21,582 - INFO - Creating tunnel for port 8492 with subdomain polaris-openelm-3B
-2025-02-09 17:34:21,582 - INFO - Executing command: mkdir -p /tmp/tunnels
-2025-02-09 17:34:22,809 - INFO - Executing command: touch /tmp/tunnels/tunnel_polaris-openelm-3b_8492.log
-2025-02-09 17:34:24,015 - INFO - Executing command: chmod 777 /tmp/tunnels/tunnel_polaris-openelm-3b_8492.log
-2025-02-09 17:34:25,235 - INFO - Executing command: nohup lt --port 8492 --subdomain polaris-openelm-3b > /tmp/tunnels/tunnel_polaris-openelm-3b_8492.log 2>&1 & echo $!
-2025-02-09 17:34:26,446 - DEBUG - Command output: 44397
-2025-02-09 17:34:26,446 - INFO - Started tunnel process with PID: 44397
-2025-02-09 17:34:29,460 - INFO - Executing command: cat /tmp/tunnels/tunnel_polaris-openelm-3b_8492.log
-2025-02-09 17:34:30,255 - DEBUG - Command output: your url is: https://polaris-openelm-3b.loca.lt
-2025-02-09 17:34:30,255 - INFO - Tunnel created successfully: https://polaris-openelm-3b.loca.lt
-2025-02-09 17:34:30,255 - INFO - Writing content to /tmp/tunnels/tunnel_polaris-openelm-3b_8492.pid
-2025-02-09 17:34:31,802 - INFO - File write completed successfully
-2025-02-09 17:34:34,055 - INFO - Executing command: rm -rf /tmp/deploy_9a94741c
-2025-02-09 17:34:34,914 - INFO - Closing SFTP connection
-2025-02-09 17:34:34,914 - INFO - Closing SSH connection
-2025-02-09 17:34:34,914 - INFO - All connections closed successfully
-2025-02-09 17:34:34,916 - INFO - Initializing SSH client.
-2025-02-09 17:34:34,916 - INFO - Attempting SSH connection to 24.83.13.62:15000
-2025-02-09 17:34:37,693 - INFO - SSH connection established successfully.
-2025-02-09 17:34:37,693 - INFO - Initializing SFTP connection
-2025-02-09 17:34:39,193 - INFO - SFTP connection established successfully
-2025-02-09 17:34:39,193 - INFO - Executing command: docker logs 96dc9d769c0b0449e72bd4a5fdafae0bc03f956eba9a643e8e94224d9c9a29f9 2>&1
-2025-02-09 17:34:39,999 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: apple/OpenELM-3B
-INFO:app.app:Loading OpenELM with Llama tokenizer
-A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-3B:
-- configuration_openelm.py
-. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
-A new version of the following files was downloaded from https://huggingface.co/apple/OpenELM-3B:
-- modeling_openelm.py
-. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
-2025-02-09 17:34:39,999 - INFO - Closing SFTP connection
-2025-02-09 17:34:39,999 - INFO - Closing SSH connection
-2025-02-09 17:34:39,999 - INFO - All connections closed successfully
+2025-02-10 15:50:25,588 - INFO - Executing command: docker images test-user-deepseek-ai-deepseek-r1-distill-qwen-7b:d5250de4 --quiet
+2025-02-10 15:50:26,464 - DEBUG - Command output: 9caedcd543ca
+2025-02-10 15:50:26,464 - INFO - Executing command: docker run -d -p 8093:8000 -e HF_TOKEN=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 test-user-deepseek-ai-deepseek-r1-distill-qwen-7b:d5250de4
+2025-02-10 15:50:27,729 - DEBUG - Command output: 7c01a47c46fecfdec6a2aaca61deb0c503a13632b7549c6fcde3eebb0cb84bdd
+2025-02-10 15:50:27,730 - INFO - Executing command: docker inspect --format='{{.State.Status}}' 7c01a47c46fecfdec6a2aaca61deb0c503a13632b7549c6fcde3eebb0cb84bdd
+2025-02-10 15:50:28,648 - DEBUG - Command output: running
+2025-02-10 15:50:28,648 - INFO - Executing command: docker inspect --format='{{json .NetworkSettings}}' 7c01a47c46fecfdec6a2aaca61deb0c503a13632b7549c6fcde3eebb0cb84bdd
+2025-02-10 15:50:29,558 - DEBUG - Command output: {"Bridge":"","SandboxID":"0cf0e923d737634e638a5ceebc38978102dcc7d8fa105d74196e36f6811aec46","SandboxKey":"/run/snap.docker/netns/0cf0e923d737","Ports":{"8000/tcp":[{"HostIp":"0.0.0.0","HostPort":"8093"},{"HostIp":"::","HostPort":"8093"}]},"HairpinMode":false,"LinkLocalIPv6Address":"","LinkLocalIPv6PrefixLen":0,"SecondaryIPAddresses":null,"SecondaryIPv6Addresses":null,"EndpointID":"cd9cd0c4d948f57e3169ba3d3a6d1f9fd2a69e2febae594d421192b5894ddbe1","Gateway":"172.17.0.1","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"IPAddress":"172.17.0.7","IPPrefixLen":16,"IPv6Gateway":"","MacAddress":"02:42:ac:11:00:07","Networks":{"bridge":{"IPAMConfig":null,"Links":null,"Aliases":null,"MacAddress":"02:42:ac:11:00:07","NetworkID":"1c865ec36cb0ef317dadb73394f7c28da5f104dd7e3ec5c114a1cf2f32c31880","EndpointID":"cd9cd0c4d948f57e3169ba3d3a6d1f9fd2a69e2febae594d421192b5894ddbe1","Gateway":"172.17.0.1","IPAddress":"172.17.0.7","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DriverOpts":null,"DNSNames":null}}}
+2025-02-10 15:50:29,558 - INFO - Creating tunnel for port 8093 with subdomain polaris-deepseek-7B-banadda
+2025-02-10 15:50:29,558 - INFO - Executing command: mkdir -p /tmp/tunnels
+2025-02-10 15:50:30,450 - INFO - Executing command: touch /tmp/tunnels/tunnel_polaris-deepseek-7b-banadda_8093.log
+2025-02-10 15:50:31,341 - INFO - Executing command: chmod 777 /tmp/tunnels/tunnel_polaris-deepseek-7b-banadda_8093.log
+2025-02-10 15:50:32,235 - INFO - Executing command: nohup lt --port 8093 --subdomain polaris-deepseek-7b-banadda > /tmp/tunnels/tunnel_polaris-deepseek-7b-banadda_8093.log 2>&1 & echo $!
+2025-02-10 15:50:33,135 - DEBUG - Command output: 77779
+2025-02-10 15:50:33,136 - INFO - Started tunnel process with PID: 77779
+2025-02-10 15:50:36,137 - INFO - Executing command: cat /tmp/tunnels/tunnel_polaris-deepseek-7b-banadda_8093.log
+2025-02-10 15:50:36,729 - DEBUG - Command output: your url is: https://polaris-deepseek-7b-banadda.loca.lt
+2025-02-10 15:50:36,729 - INFO - Tunnel created successfully: https://polaris-deepseek-7b-banadda.loca.lt
+2025-02-10 15:50:36,730 - INFO - Writing content to /tmp/tunnels/tunnel_polaris-deepseek-7b-banadda_8093.pid
+2025-02-10 15:50:37,852 - INFO - File write completed successfully
+2025-02-10 15:50:39,900 - INFO - Executing command: rm -rf /tmp/deploy_28165c4f
+2025-02-10 15:50:40,534 - INFO - Closing SFTP connection
+2025-02-10 15:50:40,534 - INFO - Closing SSH connection
+2025-02-10 15:50:40,535 - INFO - All connections closed successfully
+2025-02-10 15:50:40,536 - INFO - Initializing SSH client.
+2025-02-10 15:50:40,536 - INFO - Attempting SSH connection to 24.83.13.62:15000
+2025-02-10 15:50:42,599 - INFO - SSH connection established successfully.
+2025-02-10 15:50:42,600 - INFO - Initializing SFTP connection
+2025-02-10 15:50:43,717 - INFO - SFTP connection established successfully
+2025-02-10 15:50:43,718 - INFO - Executing command: docker logs 7c01a47c46fecfdec6a2aaca61deb0c503a13632b7549c6fcde3eebb0cb84bdd 2>&1
+2025-02-10 15:50:44,328 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading DeepSeek tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+2025-02-10 15:50:44,330 - INFO - Closing SFTP connection
+2025-02-10 15:50:44,330 - INFO - Closing SSH connection
+2025-02-10 15:50:44,331 - INFO - All connections closed successfully

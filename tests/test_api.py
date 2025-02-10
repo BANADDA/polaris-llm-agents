@@ -6,9 +6,9 @@ client = TestClient(app)
 
 def test_deploy_request_print():
     payload = {
-        "model_id": "apple/OpenELM-3B",
+        "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
         "user_id": "test-user",
-        "api_name": "polaris-openelm-3B",
+        "api_name": "polaris-deepseek-7B-banadda",
         "ssh_config": {
             "host": "24.83.13.62",
             "username": "tang",
