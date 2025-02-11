@@ -1,346 +1,31 @@
-2025-02-11 07:24:11,870 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:30:33,871 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:30:33,872 - DeploymentService - INFO - Deploying model: gpt2 for user: DZanm1oNxoUYV5NAU9bSlbFd9sz2
-2025-02-11 07:30:38,371 - DeploymentService - INFO - Model type found: text_generation
-2025-02-11 07:30:38,371 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
-2025-02-11 07:30:45,116 - DeploymentService - INFO - Verifying Docker service status on remote machine
-2025-02-11 07:30:48,399 - DeploymentService - INFO - Using free port: 8403
-2025-02-11 07:30:48,399 - DeploymentService - INFO - Using image tag: DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:33cafc21
-2025-02-11 07:30:48,399 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_837c18da
-2025-02-11 07:30:56,619 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_837c18da/Dockerfile
-2025-02-11 07:30:57,890 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_837c18da/requirements.txt
-2025-02-11 07:30:59,159 - DeploymentService - INFO - Generated app.py at /tmp/deploy_837c18da/app/app.py
-2025-02-11 07:31:00,396 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_837c18da/app/auth/middleware.py
-2025-02-11 07:31:01,605 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_837c18da/app/auth/token.py
-2025-02-11 07:31:02,845 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_837c18da/app/auth/config.json
-2025-02-11 07:31:04,103 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_837c18da/app/api/inference.py
-2025-02-11 07:31:05,300 - DeploymentService - INFO - Generated api_token at /tmp/deploy_837c18da/app/api/token.py
-2025-02-11 07:31:05,300 - DeploymentService - INFO - Building Docker image on remote machine
-2025-02-11 07:31:06,147 - DeploymentService - ERROR - Error in deployment: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+2025-02-11 16:04:28,268 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-11 16:04:28,268 - DeploymentService - INFO - Deploying model: gpt2 for user: dzanm1onxouyv5nau9bslbfd9sz2
+2025-02-11 16:04:30,697 - DeploymentService - INFO - Model type found: text_generation
+2025-02-11 16:04:30,697 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
+2025-02-11 16:04:35,059 - DeploymentService - INFO - Verifying Docker service status on remote machine
+2025-02-11 16:04:38,188 - DeploymentService - INFO - Using free port: 8562
+2025-02-11 16:04:38,188 - DeploymentService - INFO - Using image tag: dzanm1onxouyv5nau9bslbfd9sz2-gpt2:50b91d33
+2025-02-11 16:04:38,188 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_a7bb9a4b
+2025-02-11 16:04:45,820 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_a7bb9a4b/Dockerfile
+2025-02-11 16:04:46,920 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_a7bb9a4b/requirements.txt
+2025-02-11 16:04:48,039 - DeploymentService - INFO - Generated app.py at /tmp/deploy_a7bb9a4b/app/app.py
+2025-02-11 16:04:49,159 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_a7bb9a4b/app/auth/middleware.py
+2025-02-11 16:04:50,259 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_a7bb9a4b/app/auth/token.py
+2025-02-11 16:04:51,361 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_a7bb9a4b/app/auth/config.json
+2025-02-11 16:04:52,493 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_a7bb9a4b/app/api/inference.py
+2025-02-11 16:04:53,608 - DeploymentService - INFO - Generated api_token at /tmp/deploy_a7bb9a4b/app/api/token.py
+2025-02-11 16:04:53,608 - DeploymentService - INFO - Building Docker image on remote machine
+2025-02-11 16:04:54,958 - DeploymentService - INFO - Build result: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
             Install the buildx component to build images with BuildKit:
             https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:33cafc21" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:33cafc21" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:31:07,467 - DeploymentService - ERROR - Deployment error: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:33cafc21" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 79, in deploy_model
-    container_id, network_details, tunnel_url = await self._deploy_container(
-                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:33cafc21" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:32:56,610 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:33:16,245 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:33:16,245 - DeploymentService - INFO - Deploying model: gpt2 for user: DZanm1oNxoUYV5NAU9bSlbFd9sz2
-2025-02-11 07:33:19,653 - DeploymentService - INFO - Model type found: text_generation
-2025-02-11 07:33:19,653 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
-2025-02-11 07:33:25,690 - DeploymentService - INFO - Verifying Docker service status on remote machine
-2025-02-11 07:33:29,073 - DeploymentService - INFO - Using free port: 8004
-2025-02-11 07:33:29,077 - DeploymentService - INFO - Using image tag: DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:16bca356
-2025-02-11 07:33:29,077 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_b39109ef
-2025-02-11 07:33:37,191 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_b39109ef/Dockerfile
-2025-02-11 07:33:38,388 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_b39109ef/requirements.txt
-2025-02-11 07:33:39,584 - DeploymentService - INFO - Generated app.py at /tmp/deploy_b39109ef/app/app.py
-2025-02-11 07:33:40,741 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_b39109ef/app/auth/middleware.py
-2025-02-11 07:33:41,972 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_b39109ef/app/auth/token.py
-2025-02-11 07:33:43,204 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_b39109ef/app/auth/config.json
-2025-02-11 07:33:44,325 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_b39109ef/app/api/inference.py
-2025-02-11 07:33:45,555 - DeploymentService - INFO - Generated api_token at /tmp/deploy_b39109ef/app/api/token.py
-2025-02-11 07:33:45,555 - DeploymentService - INFO - Building Docker image on remote machine
-2025-02-11 07:33:46,401 - DeploymentService - ERROR - Error in deployment: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:16bca356" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:16bca356" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:33:47,620 - DeploymentService - ERROR - Deployment error: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:16bca356" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 79, in deploy_model
-    container_id, network_details, tunnel_url = await self._deploy_container(
-                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:16bca356" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:37:34,854 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:37:34,854 - DeploymentService - INFO - Deploying model: gpt2 for user: DZanm1oNxoUYV5NAU9bSlbFd9sz2
-2025-02-11 07:37:37,272 - DeploymentService - INFO - Model type found: text_generation
-2025-02-11 07:37:37,272 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
-2025-02-11 07:37:43,126 - DeploymentService - INFO - Verifying Docker service status on remote machine
-2025-02-11 07:37:48,663 - DeploymentService - INFO - Using free port: 8270
-2025-02-11 07:37:48,671 - DeploymentService - INFO - Using image tag: DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:f4b8cfe1
-2025-02-11 07:37:48,671 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_09cedfca
-2025-02-11 07:37:57,156 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_09cedfca/Dockerfile
-2025-02-11 07:37:58,386 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_09cedfca/requirements.txt
-2025-02-11 07:37:59,582 - DeploymentService - INFO - Generated app.py at /tmp/deploy_09cedfca/app/app.py
-2025-02-11 07:38:00,839 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_09cedfca/app/auth/middleware.py
-2025-02-11 07:38:02,066 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_09cedfca/app/auth/token.py
-2025-02-11 07:38:04,017 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_09cedfca/app/auth/config.json
-2025-02-11 07:38:05,205 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_09cedfca/app/api/inference.py
-2025-02-11 07:38:07,194 - DeploymentService - INFO - Generated api_token at /tmp/deploy_09cedfca/app/api/token.py
-2025-02-11 07:38:07,194 - DeploymentService - INFO - Building Docker image on remote machine
-2025-02-11 07:38:08,522 - DeploymentService - ERROR - Error in deployment: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:f4b8cfe1" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:f4b8cfe1" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:38:09,704 - DeploymentService - ERROR - Deployment error: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:f4b8cfe1" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 79, in deploy_model
-    container_id, network_details, tunnel_url = await self._deploy_container(
-                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:f4b8cfe1" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:38:35,069 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:38:51,527 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:38:51,527 - DeploymentService - INFO - Deploying model: gpt2 for user: DZanm1oNxoUYV5NAU9bSlbFd9sz2
-2025-02-11 07:38:55,316 - DeploymentService - INFO - Model type found: text_generation
-2025-02-11 07:38:55,316 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
-2025-02-11 07:39:03,218 - DeploymentService - INFO - Verifying Docker service status on remote machine
-2025-02-11 07:39:07,093 - DeploymentService - INFO - Using free port: 8674
-2025-02-11 07:39:07,093 - DeploymentService - INFO - Using image tag: DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:84a39cf3
-2025-02-11 07:39:07,093 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_a175217a
-2025-02-11 07:39:15,606 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_a175217a/Dockerfile
-2025-02-11 07:39:16,719 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_a175217a/requirements.txt
-2025-02-11 07:39:18,053 - DeploymentService - INFO - Generated app.py at /tmp/deploy_a175217a/app/app.py
-2025-02-11 07:39:19,276 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_a175217a/app/auth/middleware.py
-2025-02-11 07:39:20,508 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_a175217a/app/auth/token.py
-2025-02-11 07:39:21,761 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_a175217a/app/auth/config.json
-2025-02-11 07:39:22,965 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_a175217a/app/api/inference.py
-2025-02-11 07:39:24,300 - DeploymentService - INFO - Generated api_token at /tmp/deploy_a175217a/app/api/token.py
-2025-02-11 07:39:24,300 - DeploymentService - INFO - Building Docker image on remote machine
-2025-02-11 07:39:25,133 - DeploymentService - ERROR - Error in deployment: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:84a39cf3" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:84a39cf3" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:39:26,454 - DeploymentService - ERROR - Deployment error: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:84a39cf3" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 79, in deploy_model
-    container_id, network_details, tunnel_url = await self._deploy_container(
-                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:84a39cf3" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:41:56,296 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:42:29,439 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:42:41,852 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:42:41,852 - DeploymentService - INFO - Deploying model: gpt2 for user: DZanm1oNxoUYV5NAU9bSlbFd9sz2
-2025-02-11 07:42:45,413 - DeploymentService - INFO - Model type found: text_generation
-2025-02-11 07:42:45,413 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
-2025-02-11 07:42:50,835 - DeploymentService - INFO - Verifying Docker service status on remote machine
-2025-02-11 07:42:55,142 - DeploymentService - INFO - Using free port: 8896
-2025-02-11 07:42:55,142 - DeploymentService - INFO - Using image tag: DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:9d6d339e
-2025-02-11 07:42:55,142 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_147d52fd
-2025-02-11 07:43:04,155 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_147d52fd/Dockerfile
-2025-02-11 07:43:06,095 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_147d52fd/requirements.txt
-2025-02-11 07:43:08,670 - DeploymentService - INFO - Generated app.py at /tmp/deploy_147d52fd/app/app.py
-2025-02-11 07:43:09,890 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_147d52fd/app/auth/middleware.py
-2025-02-11 07:43:11,111 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_147d52fd/app/auth/token.py
-2025-02-11 07:43:12,345 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_147d52fd/app/auth/config.json
-2025-02-11 07:43:13,576 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_147d52fd/app/api/inference.py
-2025-02-11 07:43:14,802 - DeploymentService - INFO - Generated api_token at /tmp/deploy_147d52fd/app/api/token.py
-2025-02-11 07:43:14,802 - DeploymentService - INFO - Building Docker image on remote machine
-2025-02-11 07:43:16,129 - DeploymentService - ERROR - Error in deployment: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:9d6d339e" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:9d6d339e" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:43:17,372 - DeploymentService - ERROR - Deployment error: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:9d6d339e" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-Traceback (most recent call last):
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 79, in deploy_model
-    container_id, network_details, tunnel_url = await self._deploy_container(
-                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\deployment.py", line 147, in _deploy_container
-    build_result = await self.tunnel.execute_long_command(build_cmd, timeout=3600)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 97, in execute_long_command
-    return await self.execute_command(command, timeout=timeout)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\HP\Documents\model_deployment\deployment\app\services\tunnel.py", line 86, in execute_command
-    raise Exception(f"Command failed with status {exit_status}: {error}")
-Exception: Command failed with status 125: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-invalid argument "DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2:9d6d339e" for "-t, --tag" flag: invalid reference format: repository name (library/DZanm1oNxoUYV5NAU9bSlbFd9sz2-gpt2) must be lowercase
-See 'docker build --help'.
-2025-02-11 07:47:52,718 - DeploymentService - INFO - Initializing DeploymentService
-2025-02-11 07:47:52,718 - DeploymentService - INFO - Deploying model: gpt2 for user: dzanm1onxouyv5nau9bslbfd9sz2
-2025-02-11 07:47:55,381 - DeploymentService - INFO - Model type found: text_generation
-2025-02-11 07:47:55,381 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
-2025-02-11 07:48:01,012 - DeploymentService - INFO - Verifying Docker service status on remote machine
-2025-02-11 07:48:04,692 - DeploymentService - INFO - Using free port: 8834
-2025-02-11 07:48:04,700 - DeploymentService - INFO - Using image tag: dzanm1onxouyv5nau9bslbfd9sz2-gpt2:3760f849
-2025-02-11 07:48:04,700 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_1f804a8d
-2025-02-11 07:48:13,607 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_1f804a8d/Dockerfile
-2025-02-11 07:48:14,835 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_1f804a8d/requirements.txt
-2025-02-11 07:48:15,999 - DeploymentService - INFO - Generated app.py at /tmp/deploy_1f804a8d/app/app.py
-2025-02-11 07:48:17,188 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_1f804a8d/app/auth/middleware.py
-2025-02-11 07:48:18,413 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_1f804a8d/app/auth/token.py
-2025-02-11 07:48:19,649 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_1f804a8d/app/auth/config.json
-2025-02-11 07:48:20,871 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_1f804a8d/app/api/inference.py
-2025-02-11 07:48:22,106 - DeploymentService - INFO - Generated api_token at /tmp/deploy_1f804a8d/app/api/token.py
-2025-02-11 07:48:22,106 - DeploymentService - INFO - Building Docker image on remote machine
-2025-02-11 07:53:49,206 - DeploymentService - INFO - Build result: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-2025-02-11 07:53:50,406 - DeploymentService - INFO - Starting container on remote
-2025-02-11 07:53:53,488 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 is running
-2025-02-11 07:53:54,769 - DeploymentService - INFO - Creating persistent tunnel for gpt2-66540
-2025-02-11 07:54:13,543 - DeploymentService - INFO - Tunnel created successfully: https://gpt2-66540.loca.lt
-2025-02-11 07:54:15,950 - DeploymentService - INFO - Cleaning up temporary files
-2025-02-11 07:54:20,580 - DeploymentService - INFO - Deployment successful; returning connection details
-2025-02-11 07:54:20,589 - DeploymentService - INFO - Starting log streaming for container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410
-2025-02-11 07:54:26,242 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:04:56,343 - DeploymentService - INFO - Starting container on remote
+2025-02-11 16:04:59,201 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb is running
+2025-02-11 16:05:00,388 - DeploymentService - INFO - Creating persistent tunnel for gpt2-79137
+2025-02-11 16:05:10,557 - DeploymentService - INFO - Tunnel created successfully: https://gpt2-79137.loca.lt
+2025-02-11 16:05:12,071 - DeploymentService - INFO - Cleaning up temporary files
+2025-02-11 16:05:12,861 - DeploymentService - INFO - Deployment successful; returning connection details
+2025-02-11 16:05:12,861 - DeploymentService - INFO - Starting log streaming for container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb
+2025-02-11 16:05:18,048 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -351,7 +36,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:54:32,100 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:23,881 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -362,7 +47,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:54:37,972 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:29,699 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -373,7 +58,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:54:43,762 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:35,547 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -384,7 +69,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:54:49,627 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:41,386 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -395,7 +80,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:54:55,529 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:47,278 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -406,7 +91,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:55:01,395 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:53,179 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -417,7 +102,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:55:07,237 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:05:59,007 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -428,7 +113,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:55:13,224 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:06:04,825 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -439,7 +124,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:55:19,077 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:06:10,631 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -450,7 +135,7 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-2025-02-11 07:55:24,959 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+2025-02-11 16:06:16,445 - DeploymentService - INFO - Container 39852412101f4724b7e47ad7b36b519367a5471ffdd54bed36a76d688299bddb logs:
 INFO:app.app:Loading model and tokenizer for: gpt2
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
@@ -461,3 +146,37 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     172.17.0.1:51396 - "OPTIONS /token?user_id=dzanm1onxouyv5nau9bslbfd9sz2&model_id=gpt2 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:51396 - "GET /token?user_id=dzanm1onxouyv5nau9bslbfd9sz2&model_id=gpt2 HTTP/1.1" 405 Method Not Allowed
+2025-02-11 16:59:05,140 - DeploymentService - INFO - Initializing DeploymentService
+2025-02-11 16:59:05,140 - DeploymentService - INFO - Deploying model: gpt2-large for user: dzanm1onxouyv5nau9bslbfd9sz2
+2025-02-11 16:59:08,320 - DeploymentService - INFO - Model type found: text_generation
+2025-02-11 16:59:08,320 - DeploymentService - INFO - Setting up SSH tunnel using config: {'host': '24.83.13.62', 'username': 'tang', 'port': '15000', 'password': 'Yogptcommune1'}
+2025-02-11 16:59:12,820 - DeploymentService - INFO - Verifying Docker service status on remote machine
+2025-02-11 16:59:16,037 - DeploymentService - INFO - Using free port: 8878
+2025-02-11 16:59:16,037 - DeploymentService - INFO - Using image tag: dzanm1onxouyv5nau9bslbfd9sz2-gpt2-large:d579d67b
+2025-02-11 16:59:16,037 - DeploymentService - INFO - Creating temporary directory on remote: /tmp/deploy_31eec9f4
+2025-02-11 16:59:23,822 - DeploymentService - INFO - Generated Dockerfile at /tmp/deploy_31eec9f4/Dockerfile
+2025-02-11 16:59:24,933 - DeploymentService - INFO - Generated requirements.txt at /tmp/deploy_31eec9f4/requirements.txt
+2025-02-11 16:59:26,086 - DeploymentService - INFO - Generated app.py at /tmp/deploy_31eec9f4/app/app.py
+2025-02-11 16:59:27,219 - DeploymentService - INFO - Generated auth_middleware at /tmp/deploy_31eec9f4/app/auth/middleware.py
+2025-02-11 16:59:28,343 - DeploymentService - INFO - Generated auth_token at /tmp/deploy_31eec9f4/app/auth/token.py
+2025-02-11 16:59:29,517 - DeploymentService - INFO - Generated auth_config at /tmp/deploy_31eec9f4/app/auth/config.json
+2025-02-11 16:59:30,645 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_31eec9f4/app/api/inference.py
+2025-02-11 16:59:31,762 - DeploymentService - INFO - Generated api_token at /tmp/deploy_31eec9f4/app/api/token.py
+2025-02-11 16:59:31,762 - DeploymentService - INFO - Building Docker image on remote machine
+2025-02-11 16:59:33,145 - DeploymentService - INFO - Build result: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+2025-02-11 16:59:34,570 - DeploymentService - INFO - Starting container on remote
+2025-02-11 16:59:37,368 - DeploymentService - INFO - Container fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa is running
+2025-02-11 16:59:38,608 - DeploymentService - INFO - Creating persistent tunnel for gpt2-large-17802
+2025-02-11 16:59:56,412 - DeploymentService - INFO - Tunnel created successfully: https://gpt2-large-17802.loca.lt
+2025-02-11 16:59:57,906 - DeploymentService - INFO - Cleaning up temporary files
+2025-02-11 16:59:58,727 - DeploymentService - INFO - Deployment successful; returning connection details
+2025-02-11 16:59:58,727 - DeploymentService - INFO - Starting log streaming for container fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa
+2025-02-11 17:00:04,085 - DeploymentService - INFO - Container fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa logs:
+INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
