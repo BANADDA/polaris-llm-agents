@@ -6,9 +6,9 @@ client = TestClient(app)
 
 def test_deploy_request_print():
     payload = {
-        "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "model_id": "gpt2-medium",
         "user_id": "test-user",
-        "api_name": "polaris-deepseek-7B-banadda",
+        "api_name": "gpt-medium-polaris",
         "ssh_config": {
             "host": "24.83.13.62",
             "username": "tang",

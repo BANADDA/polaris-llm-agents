@@ -15,10 +15,10 @@ from threading import Thread
 from llama_cpp import Llama
 {% endif %}
 from transformers import (
-    AutoModelForCausalLM, 
-    AutoTokenizer, 
+    AutoModelForCausalLM,
+    AutoTokenizer,
     TextIteratorStreamer,
-    StoppingCriteria, 
+    StoppingCriteria,
     StoppingCriteriaList
 )
 import torch
@@ -31,39 +31,70 @@ from firebase_admin import firestore
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Create a queue for logging
+log_queue = Queue()
+
+
+class QueueHandler(logging.Handler):
+    def __init__(self, queue):
+        super().__init__()
+        self.queue = queue
+
+    def emit(self, record):
+        self.queue.put(record)
+
+
+queue_handler = QueueHandler(log_queue)
+logger.addHandler(queue_handler)
+
 app = FastAPI()
 model_id = os.getenv("MODEL_ID")
+model_ready = False
 db = firestore.client()
 
-class StoppingCriteriaSub(StoppingCriteria):
-    def __init__(self, stops=[], tokenizer=None):
-        super().__init__()
-        self.stops = [tokenizer.encode(stop, return_tensors='pt')[0] for stop in stops]
 
-    def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
+class StoppingCriteriaSub(StoppingCriteria):
+    def __init__(self, stops=None, tokenizer=None):
+        super().__init__()
+        if stops is None:
+            stops = []
+        self.stops = [
+            tokenizer.encode(stop, return_tensors='pt')[0] for stop in stops
+        ]
+
+    def __call__(
+        self,
+        input_ids: torch.LongTensor,
+        scores: torch.FloatTensor,
+        **kwargs
+    ) -> bool:
         for stop in self.stops:
             if torch.all((input_ids[0][-len(stop):] == stop)).item():
                 return True
         return False
 
+
 def is_llama_model(model_id: str) -> bool:
-    """Check if the model should use llama.cpp backend"""
+    """Check if the model should use llama.cpp backend."""
     llama_identifiers = ["llama", "alpaca", "vicuna", "wizard"]
     return any(identifier in model_id.lower() for identifier in llama_identifiers)
 
+
 def is_openelm_model(model_id: str) -> bool:
-    """Check if model is OpenELM"""
+    """Check if model is OpenELM."""
     return "openelm" in model_id.lower()
 
+
 def is_deepseek_model(model_id: str) -> bool:
-    """Check if model is DeepSeek"""
+    """Check if model is DeepSeek."""
     return "deepseek" in model_id.lower()
+
 
 # Initialize model with error handling
 try:
     hf_token = os.getenv("HF_TOKEN", "")
     logger.info(f"Loading model and tokenizer for: {model_id}")
-    
+
     if is_llama_model(model_id):
         logger.info("Loading Llama model using llama.cpp backend")
         model = Llama(
@@ -74,10 +105,12 @@ try:
         )
         logger.info("Llama model loaded successfully")
         backend = "llama.cpp"
+        model_ready = True
+
     else:
         logger.info("Loading model using transformers backend")
         backend = "transformers"
-        
+
         if is_openelm_model(model_id):
             logger.info("Loading OpenELM with Llama tokenizer")
             tokenizer = AutoTokenizer.from_pretrained(
@@ -94,11 +127,11 @@ try:
         else:
             logger.info("Loading standard tokenizer")
             tokenizer = AutoTokenizer.from_pretrained(model_id)
-            
+
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token
             tokenizer.pad_token_id = tokenizer.eos_token_id
-            
+
         # Try GPU first, fall back to CPU if needed
         cuda_available = False
         try:
@@ -110,7 +143,7 @@ try:
         except Exception as cuda_error:
             logger.warning(f"CUDA test failed: {str(cuda_error)}")
             cuda_available = False
-            
+
         try:
             if cuda_available:
                 logger.info("Loading model with CUDA optimizations")
@@ -133,18 +166,21 @@ try:
                     torch_dtype=torch.float32,
                     low_cpu_mem_usage=True
                 )
+            model_ready = True
+            logger.info("Model loaded successfully")
         except Exception as model_error:
             logger.error(f"Error loading model: {str(model_error)}")
             raise
-            
+
     logger.info(f"Model loaded successfully using {backend} backend")
-    
+
 except Exception as e:
     logger.error(f"Error loading model: {str(e)}")
     raise RuntimeError(f"Failed to load model: {str(e)}")
 
+
 async def get_chat_history(user_id: str, chat_id: str) -> list:
-    """Retrieve chat history from Firestore"""
+    """Retrieve chat history from Firestore."""
     safe_model_id = model_id.replace("/", "-").lower()
     full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
     doc = db.collection('chats').document(full_chat_id).get()
@@ -152,63 +188,128 @@ async def get_chat_history(user_id: str, chat_id: str) -> list:
         raise HTTPException(status_code=404, detail="Chat not found")
     return doc.to_dict().get('messages', [])
 
+
 async def save_message(user_id: str, chat_id: str, role: str, content: str):
-    """Save a message to the chat history"""
-    safe_model_id = model_id.replace("/", "-").lower()
-    full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
-    chat_ref = db.collection('chats').document(full_chat_id)
-    
-    chat_ref.update({
-        'messages': firestore.ArrayUnion([{
+    """Save a message to the chat history."""
+    try:
+        safe_model_id = model_id.replace("/", "-").lower()
+        full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
+
+        # Get a reference to the chat document
+        chat_ref = db.collection('chats').document(full_chat_id)
+
+        # Create the message document
+        message = {
             'role': role,
             'content': content,
             'timestamp': datetime.now()
-        }]),
-        'last_updated': datetime.now()
-    })
+        }
+
+        # Update the chat document
+        chat_ref.update({
+            'messages': firestore.ArrayUnion([message]),
+            'last_updated': datetime.now()
+        })
+
+        logger.info(f"Message saved successfully for chat {chat_id}")
+    except Exception as e:
+        logger.error(f"Error saving message: {str(e)}")
+        raise
+
+
+@app.get("/model/loading-status")
+async def stream_loading_status():
+    """
+    Stream actual model loading status in real-time.
+    """
+    async def generate():
+        global model_ready
+
+        # First, send any existing logs
+        while not log_queue.empty():
+            record = log_queue.get()
+            yield (
+                "data: "
+                f"{json.dumps({'message': record.getMessage(), 'level': record.levelname})}"
+                "\n\n"
+            )
+
+        # Then continue streaming new logs until model is ready
+        while not model_ready:
+            try:
+                record = log_queue.get(timeout=1.0)
+                yield (
+                    "data: "
+                    f"{json.dumps({'message': record.getMessage(), 'level': record.levelname})}"
+                    "\n\n"
+                )
+            except:
+                yield "data: {\"status\": \"loading\"}\n\n"
+
+        # Send final ready message
+        yield "data: {\"status\": \"ready\", \"message\": \"Model is ready for inference\"}\n\n"
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
 
 @app.post("/chat/{chat_id}/message")
 async def chat_message(
-    chat_id: str, 
-    prompt: str, 
+    chat_id: str,
+    prompt: str,
     token_data: dict = Depends(verify_token)
 ):
+    if not model_ready:
+        raise HTTPException(
+            status_code=503,
+            detail="Model is still loading. Please try again in a few moments."
+        )
+
     try:
         user_id = token_data['user_id']
         history = await get_chat_history(user_id, chat_id)
-        
+
         async def generate() -> AsyncGenerator[str, None]:
             logger.info("Generating response")
-            
+
             # Format history with clear separation and structure
             formatted_history = []
             if history:
-                # Get last few messages but maintain conversation flow
-                relevant_history = history[-4:]  # Last 4 messages for context
+                relevant_history = history[-4:]
                 for msg in relevant_history:
                     if msg['role'] == 'user':
                         formatted_history.append(f"Human: {msg['content'].strip()}")
                     else:
                         formatted_history.append(f"Assistant: {msg['content'].strip()}")
-            
+
             # Build context-aware prompt
-            system_prompt = """You are a helpful AI assistant focused on providing accurate, factual responses. 
-            Important instructions:
-            - Provide accurate information based on facts
-            - Stay focused on the current question
-            - Acknowledge uncertainty when appropriate
-            - Use formal, clear language
-            - Build upon previous context when relevant
-            - Avoid speculation or making up information
-            """
-            
+            system_prompt = (
+                "You are a helpful AI assistant focused on providing accurate, "
+                "factual responses.\n"
+                "Important instructions:\n"
+                "- Provide accurate information based on facts\n"
+                "- Stay focused on the current question\n"
+                "- Acknowledge uncertainty when appropriate\n"
+                "- Use formal, clear language\n"
+                "- Build upon previous context when relevant\n"
+                "- Avoid speculation or making up information\n"
+            )
+
             context = "\n".join(formatted_history) if formatted_history else ""
-            if context:
-                full_prompt = f"{system_prompt}\n\nPrevious conversation:\n{context}\n\nHuman: {prompt.strip()}\nAssistant: Let me provide a clear and accurate response."
-            else:
-                full_prompt = f"{system_prompt}\n\nHuman: {prompt.strip()}\nAssistant: Let me provide a clear and accurate response."
-            
+            full_prompt = f"{system_prompt}\n\nHuman: {prompt.strip()}\nAssistant:"
+
             try:
+                full_response = ""
+                buffer = ""
+                current_sentence = ""
+
                 if backend == "llama.cpp":
                     response = model(
                         full_prompt,
@@ -219,27 +320,22 @@ async def chat_message(
                         stream=True,
                         stop=["Human:", "Assistant:"]
                     )
-                    
-                    buffer = ""
-                    current_sentence = ""
-                    
+
                     for chunk in response:
                         text = chunk['choices'][0]['text']
                         if text:
                             current_sentence += text
-                            
-                            if any(current_sentence.rstrip().endswith(p) for p in ['.', '!', '?', ':', '\n']):
+                            if any(
+                                current_sentence.rstrip().endswith(p)
+                                for p in ['.', '!', '?', ':', '\n']
+                            ):
                                 buffer += current_sentence
                                 if len(buffer) >= 30:
                                     yield f"data: {json.dumps({'text': buffer.strip()})}\n\n"
+                                    full_response += buffer
                                     buffer = ""
                                 current_sentence = ""
-                    
-                    # Send any remaining text
-                    remaining = (buffer + current_sentence).strip()
-                    if remaining:
-                        yield f"data: {json.dumps({'text': remaining})}\n\n"
-                    
+
                 else:
                     inputs = tokenizer(
                         full_prompt,
@@ -248,20 +344,20 @@ async def chat_message(
                         truncation=True,
                         max_length=2048
                     )
-                    
                     inputs = {k: v.to(model.device) for k, v in inputs.items()}
+
                     streamer = TextIteratorStreamer(
-                        tokenizer, 
-                        skip_prompt=True, 
+                        tokenizer,
+                        skip_prompt=True,
                         skip_special_tokens=True
                     )
-                    
+
                     def generate_in_thread():
                         try:
                             with torch.no_grad():
                                 model.generate(
                                     **inputs,
-                                    max_new_tokens=150,
+                                    max_new_tokens=250,
                                     do_sample=True,
                                     temperature=0.6,
                                     top_p=0.9,
@@ -278,39 +374,40 @@ async def chat_message(
                                 )
                         except Exception as e:
                             logger.error(f"Generation error: {str(e)}")
-                    
+
                     Thread(target=generate_in_thread).start()
-                    
-                    buffer = ""
-                    current_sentence = ""
-                    
+
                     for new_text in streamer:
-                        # Clean up text and maintain sentence structure
                         text = " ".join(new_text.split())
                         if text:
                             current_sentence += text + " "
-                            
-                            # Check for natural break points
-                            if any(current_sentence.rstrip().endswith(p) for p in ['.', '!', '?', ':', '\n']):
+                            if any(
+                                current_sentence.rstrip().endswith(p)
+                                for p in ['.', '!', '?', ':', '\n']
+                            ):
                                 buffer += current_sentence
                                 if len(buffer) >= 30:
                                     yield f"data: {json.dumps({'text': buffer.strip()})}\n\n"
+                                    full_response += buffer
                                     buffer = ""
                                 current_sentence = ""
-                    
-                    # Send any remaining text
-                    remaining = (buffer + current_sentence).strip()
-                    if remaining:
-                        yield f"data: {json.dumps({'text': remaining})}\n\n"
-                
-                # Save messages after successful generation
+
+                # Send any remaining text
+                remaining = (buffer + current_sentence).strip()
+                if remaining:
+                    yield f"data: {json.dumps({'text': remaining})}\n\n"
+                    full_response += remaining
+
+                # Save messages after generation is complete
+                logger.info("Saving conversation messages")
                 await save_message(user_id, chat_id, "user", prompt.strip())
-                await save_message(user_id, chat_id, "assistant", buffer.strip())
-                    
+                await save_message(user_id, chat_id, "assistant", full_response.strip())
+                logger.info("Messages saved successfully")
+
             except Exception as e:
                 logger.error(f"Error during generation: {e}")
                 yield f"data: {json.dumps({'error': str(e)})}\n\n"
-        
+
         return StreamingResponse(
             generate(),
             media_type="text/event-stream",
@@ -320,14 +417,15 @@ async def chat_message(
                 "X-Accel-Buffering": "no"
             }
         )
-        
+
     except Exception as e:
         logger.error(f"Error during chat: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/chat/{chat_id}/history")
 async def get_chat_messages(
-    chat_id: str, 
+    chat_id: str,
     token_data: dict = Depends(verify_token)
 ):
     try:
@@ -338,16 +436,18 @@ async def get_chat_messages(
         logger.error(f"Error getting chat history: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/chats")
 async def create_chat(token_data: dict = Depends(verify_token)):
-    """Create a new chat and return its ID"""
+    """Create a new chat and return its ID."""
     try:
         user_id = token_data['user_id']
         safe_model_id = model_id.replace("/", "-").lower()
-        
+
         chat_id = str(uuid.uuid4())[:8]
         full_chat_id = f"{user_id}-{safe_model_id}-{chat_id}"
-        
+
+        # Create chat document in Firestore
         db.collection('chats').document(full_chat_id).set({
             'user_id': user_id,
             'model_id': model_id,
@@ -356,59 +456,71 @@ async def create_chat(token_data: dict = Depends(verify_token)):
             'active': True,
             'messages': []
         })
-        
+
         return {
             "chat_id": chat_id,
             "created_at": datetime.now().isoformat()
         }
-        
+
     except Exception as e:
         logger.error(f"Error creating chat: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/chats")
 async def list_chats(token_data: dict = Depends(verify_token)):
-    """List all active chats for the user"""
+    """List all active chats for the user."""
     try:
         user_id = token_data['user_id']
-        
-        chats = db.collection('chats')\
-            .where('user_id', '==', user_id)\
-            .where('model_id', '==', model_id)\
-            .where('active', '==', True)\
+
+        chats = (
+            db.collection('chats')
+            .where('user_id', '==', user_id)
+            .where('model_id', '==', model_id)
+            .where('active', '==', True)
             .stream()
-            
+        )
+
         return {
-            "chats": [{
-                'chat_id': chat.id.split('-')[-1],
-                'created_at': chat.get('created_at'),
-                'last_updated': chat.get('last_updated'), 
-                'message_count': len(chat.get('messages', []))
-            } for chat in chats]
+            "chats": [
+                {
+                    'chat_id': chat.id.split('-')[-1],
+                    'created_at': chat.get('created_at'),
+                    'last_updated': chat.get('last_updated'),
+                    'message_count': len(chat.get('messages', []))
+                }
+                for chat in chats
+            ]
         }
+
     except Exception as e:
         logger.error(f"Error listing chats: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.delete("/chat/{chat_id}")
 async def delete_chat(
-    chat_id: str, 
+    chat_id: str,
     token_data: dict = Depends(verify_token)
 ):
-    """Soft delete a chat"""
+    """Soft delete a chat."""
     try:
         user_id = token_data['user_id']
         safe_model_id = model_id.replace("/", "-").lower()
-        
-        db.collection('chats').document(f"{user_id}-{safe_model_id}-{chat_id}").update({
+
+        db.collection('chats').document(
+            f"{user_id}-{safe_model_id}-{chat_id}"
+        ).update({
             'active': False,
             'deleted_at': datetime.now()
         })
-        
+
         return {"status": "deleted"}
+
     except Exception as e:
         logger.error(f"Error deleting chat: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/token")
 async def get_token(user_id: str, model_id: str):
@@ -419,24 +531,26 @@ async def get_token(user_id: str, model_id: str):
         logger.error(f"Error generating token: {str(e)}")
         raise HTTPException(status_code=403, detail=str(e))
 
+
 @app.get("/health")
 async def health_check():
     status = {
-        "status": "healthy",
+        "status": "healthy" if model_ready else "loading",
         "model_id": model_id,
         "backend": backend
     }
-    
-    if backend == "llama.cpp":
-        status.update({
-            "n_ctx": model.n_ctx,
-            "n_gpu_layers": model.n_gpu_layers
-        })
-    else:
-        status.update({
-            "device": str(getattr(model, 'device', 'cpu')),
-            "cuda_available": torch.cuda.is_available(),
-            "cpu_threads": torch.get_num_threads()
-        })
-    
+
+    if model_ready:
+        if backend == "llama.cpp":
+            status.update({
+                "n_ctx": model.n_ctx,
+                "n_gpu_layers": model.n_gpu_layers
+            })
+        else:
+            status.update({
+                "device": str(getattr(model, 'device', 'cpu')),
+                "cuda_available": torch.cuda.is_available(),
+                "cpu_threads": torch.get_num_threads()
+            })
+
     return status
