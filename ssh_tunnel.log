@@ -362,3 +362,104 @@ Successfully tagged dzanm1onxouyv5nau9bslbfd9sz2-gpt2-large:d579d67b
 INFO:app.app:Loading model using transformers backend
 INFO:app.app:Loading standard tokenizer
 INFO:app.app:Loading model in CPU mode with optimizations
+2025-02-11 17:00:09,093 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:09,921 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+2025-02-11 17:00:14,922 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:15,715 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+2025-02-11 17:00:20,711 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:21,545 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:00:26,562 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:27,363 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:00:32,380 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:33,196 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:00:38,198 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:39,015 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:00:44,014 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:44,833 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:00:49,842 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:50,645 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:00:55,649 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:00:56,478 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:01:01,474 - INFO - Executing command: docker logs fd50c91b6439dc041dc7257749c34f768ee3281576b157053c399bad629d65fa 2>&1
+2025-02-11 17:01:02,287 - DEBUG - Command output: INFO:app.app:Loading model and tokenizer for: gpt2-large
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 17:01:07,301 - INFO - Closing SFTP connection
+2025-02-11 17:01:07,301 - INFO - Closing SSH connection
+2025-02-11 17:01:07,301 - INFO - All connections closed successfully
