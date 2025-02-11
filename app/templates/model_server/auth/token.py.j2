@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 import firebase_admin
 from firebase_admin import credentials, firestore
-import jwt
 import time
+import jwt
 
 # Initialize Firebase Admin using the rendered JSON file
 if not firebase_admin._apps:
@@ -16,21 +16,39 @@ class TokenManager:
     
     @staticmethod
     async def generate_token(user_id: str, model_id: str) -> str:
+        """
+        Generate a JWT token for the given user and model, verifying
+        the user is authorized to access this model deployment.
+        """
+        # Create a Firestore-safe key
         safe_model_id = model_id.replace("/", "-").lower()
         doc_path = f"{user_id}-{safe_model_id}"
         doc = db.collection('deployments').document(doc_path).get()
+        
         if not doc.exists or doc.to_dict().get('user_id') != user_id:
-            raise HTTPException(status_code=403)
-            
-        return jwt.encode({
+            raise HTTPException(status_code=403, detail="Unauthorized or invalid user/model.")
+
+        # Build the token payload
+        payload = {
             'user_id': user_id,
             'model_id': model_id,
-            'exp': time.time() + 3600
-        }, TokenManager.SECRET)
+            'exp': time.time() + 3600  # Expires in 1 hour
+        }
+
+        # Encode and return as string
+        return jwt.encode(payload, TokenManager.SECRET, algorithm="HS256")
 
     @staticmethod
     def verify_token(token: str) -> dict:
+        """
+        Decode and validate the JWT token.
+        Returns the decoded token data if valid.
+        """
         try:
             return jwt.decode(token, TokenManager.SECRET, algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise HTTPException(status_code=401, detail="Token has expired")
+        except jwt.InvalidTokenError as e:
+            raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
         except Exception as e:
             raise HTTPException(status_code=401, detail=str(e))
