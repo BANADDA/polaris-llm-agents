@@ -330,3 +330,134 @@ See 'docker build --help'.
 2025-02-11 07:48:20,871 - DeploymentService - INFO - Generated api_inference at /tmp/deploy_1f804a8d/app/api/inference.py
 2025-02-11 07:48:22,106 - DeploymentService - INFO - Generated api_token at /tmp/deploy_1f804a8d/app/api/token.py
 2025-02-11 07:48:22,106 - DeploymentService - INFO - Building Docker image on remote machine
+2025-02-11 07:53:49,206 - DeploymentService - INFO - Build result: DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+2025-02-11 07:53:50,406 - DeploymentService - INFO - Starting container on remote
+2025-02-11 07:53:53,488 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 is running
+2025-02-11 07:53:54,769 - DeploymentService - INFO - Creating persistent tunnel for gpt2-66540
+2025-02-11 07:54:13,543 - DeploymentService - INFO - Tunnel created successfully: https://gpt2-66540.loca.lt
+2025-02-11 07:54:15,950 - DeploymentService - INFO - Cleaning up temporary files
+2025-02-11 07:54:20,580 - DeploymentService - INFO - Deployment successful; returning connection details
+2025-02-11 07:54:20,589 - DeploymentService - INFO - Starting log streaming for container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410
+2025-02-11 07:54:26,242 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:54:32,100 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:54:37,972 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:54:43,762 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:54:49,627 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:54:55,529 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:55:01,395 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:55:07,237 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:55:13,224 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:55:19,077 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-02-11 07:55:24,959 - DeploymentService - INFO - Container a44566981553fb79c530d6c1238538e87469e95e1007a2da0a41b6359da7a410 logs:
+INFO:app.app:Loading model and tokenizer for: gpt2
+INFO:app.app:Loading model using transformers backend
+INFO:app.app:Loading standard tokenizer
+INFO:app.app:Loading model in CPU mode with optimizations
+INFO:app.app:Model loaded successfully
+INFO:app.app:Model loaded successfully using transformers backend
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
